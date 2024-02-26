@@ -20,11 +20,11 @@ TARGET   			?= sim
 LINKER   			?= on_chip
 
 # X-HEEP configuration
-XHEEP_DIR			:= $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep
+XHEEP_DIR			:= $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_ntt_intt_heep
 MCU_CFG				?= $(ROOT_DIR)/config/mcu-gen.hjson
 PAD_CFG				?= $(ROOT_DIR)/config/heep-pads.hjson
 APP_DIR				:= $(ROOT_DIR)/sw/applications
-EXTERNAL_DOMAINS 	:= 1 # athos accelerator
+EXTERNAL_DOMAINS 	:= 1 # accelerator
 MCU_GEN_OPTS		:= \
 	MCU_CFG=$(MCU_CFG) \
 	PAD_CFG=$(PAD_CFG) \
@@ -74,7 +74,7 @@ export MCU_CFG
 export PAD_CFG
 export EXT_PAD_CFG
 export EXTERNAL_DOMAINS
-export HEEP_DIR = $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep
+export HEEP_DIR = $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_ntt_intt_heep
 XHEEP_MAKE		= $(HEEP_DIR)/external.mk
 include Makefile.venv
 
@@ -95,7 +95,7 @@ all: clean-lock
 	$(MAKE) mcu-gen
 
 mcu-gen:
-	$(MAKE) -f $(XHEEP_MAKE) $(MAKECMDGOALS) CPU=cv32e40x BUS=NtoM MEMORY_BANKS=32 EXTERNAL_DOMAINS=$(EXTERNAL_DOMAINS)
+	$(MAKE) -f $(XHEEP_MAKE) $(MAKECMDGOALS) CPU=cv32e40p BUS=NtoM MEMORY_BANKS=32 EXTERNAL_DOMAINS=$(EXTERNAL_DOMAINS)
 	@echo "### DONE! X-HEEP MCU generated successfully"
 
 #***********************************************************************************************
@@ -103,15 +103,15 @@ mcu-gen:
 #***********************************************************************************************
 esl_epfl_x_heep-sync:
 	@echo "### Modifiying esl_epfl_x_heep repository..."
-	rsync -a config/rv_plic.c hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/rv_plic/rv_plic.c
-	rsync -a config/rv_plic.h hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/rv_plic/rv_plic.h
-	rsync -a config/dma.c hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/dma/dma.c
-	rsync -a config/dma.h hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/dma/dma.h
+	rsync -a config/rv_plic.c hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/rv_plic/rv_plic.c
+	rsync -a config/rv_plic.h hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/rv_plic/rv_plic.h
+	rsync -a config/dma.c hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/dma/dma.c
+	rsync -a config/dma.h hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/dma/dma.h
 
 .PHONY: heep-sync
 heep-sync:
 	@echo "### Updating heep repository..."
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/ ../../x-heep
+	rsync -a hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/esl_epfl_x_heep/ ../../x-heep
 
 #***********************************************************************************************
 # CHECK
@@ -165,15 +165,15 @@ app-testvectors-kem-$(SCHEME)_clean: check-parameters
 	@echo "### DONE! App testvectors-kem-$(SCHEME)_clean generated successfully"
 
 app-$(IP_TYPE): 
-	$(MAKE) -C sw applications/athos_ip_test/$(IP_TYPE)/main.hex TARGET=$(TARGET) USE_DMA=$(USE_DMA)
-	riscv32-unknown-elf-objdump -d sw/applications/athos_ip_test/$(IP_TYPE)/main.elf > dis/dis_$(IP_TYPE).s
-	riscv32-unknown-elf-objdump -S sw/applications/athos_ip_test/$(IP_TYPE)/main.elf > dis/dis_$(IP_TYPE).disasm
+	$(MAKE) -C sw applications/ip_test/$(IP_TYPE)/main.hex TARGET=$(TARGET) USE_DMA=$(USE_DMA)
+	riscv32-unknown-elf-objdump -d sw/applications/ip_test/$(IP_TYPE)/main.elf > dis/dis_$(IP_TYPE).s
+	riscv32-unknown-elf-objdump -S sw/applications/ip_test/$(IP_TYPE)/main.elf > dis/dis_$(IP_TYPE).disasm
 	@echo "### DONE! App-$(IP_TYPE) generated successfully"
 
 app-keccak:
-	$(MAKE) -C sw applications/athos_ip_test/KECCAK/main.hex  TARGET=$(TARGET) USE_DMA=$(USE_DMA)
-	riscv32-unknown-elf-objdump -d sw/applications/athos_ip_test/KECCAK/main.elf > dis/dis_keccak.s
-	riscv32-unknown-elf-objdump -S sw/applications/athos_ip_test/KECCAK/main.elf > dis/dis_keccak.disasm
+	$(MAKE) -C sw applications/ip_test/KECCAK/main.hex  TARGET=$(TARGET) USE_DMA=$(USE_DMA)
+	riscv32-unknown-elf-objdump -d sw/applications/ip_test/KECCAK/main.elf > dis/dis_keccak.s
+	riscv32-unknown-elf-objdump -S sw/applications/ip_test/KECCAK/main.elf > dis/dis_keccak.disasm
 	@echo "### DONE! App keccak-test generated successfully"
 
 
@@ -204,7 +204,7 @@ verilator-sim:
 
 run-$(IP_TYPE)-questasim: 
 	cd ./build/polito_vlsi_lab_ntt_intt_mcu_0/sim-modelsim; \
-	make run PLUSARGS="c firmware=../../../sw/applications/athos_ip_test/$(IP_TYPE)/main.hex"; \
+	make run PLUSARGS="c firmware=../../../sw/applications/ip_test/$(IP_TYPE)/main.hex"; \
 	cat uart0.log; \
 	cd ../../..;
 
@@ -238,46 +238,3 @@ clean-app:
 	$(MAKE) -C sw clean
 clean-lock:
 	$(RM) $(BUILD_DIR)/.*.lock
-
-
-help:
-	@echo "Available targets:"
-	@echo "  all                     Build the project"
-	@echo "  mcu-gen                 Generate the X-HEEP MCU"
-	@echo "  athos-sync              Update athos repository"
-	@echo "  cvpx-sync               Update cvx repository"
-	@echo "  athos-heep-sync         Update athos_heep repository"
-	@echo "  esl_epfl_x_heep-sync    Modify esl_epfl_x_heep repository"
-	@echo "  heep-sync               Update heep repository"
-	@echo "  vendor-update           Update vendored IPs"
-	@echo "  app-x-heep              Build X-HEEP application"
-	@echo "  app-helloworld          Build helloworld application"
-	@echo "  app-keccak              Build keccak application"
-	@echo "  app-PQClean-$(TYPE)-$(SCHEME)  Build PQClean application with specified type and scheme"
-	@echo "  app-test-hex            Build test-hex application"
-	@echo "  app-testvectors-kem-$(SCHEME)_clean  Build testvectors-kem application with specified scheme"
-	@echo "  app-testvectors-sign-$(SCHEME)_clean Build testvectors-sign application with specified scheme"
-	@echo "  app-xiftest             Build xiftest application"
-	@echo "  app-fips-test           Build fips-test application"
-	@echo "  app-shatest             Build sha-test application"
-	@echo "  app-$(ISA_TYPE)         Build $(ISA_TYPE)-test application"
-	@echo "  app-isa-test            Build isa-test application"
-	@echo "  questasim-sim           Run QuestaSim simulation"
-	@echo "  verilator-sim           Run Verilator simulation"
-	@echo "  run-helloworld-questasim Run helloworld application on QuestaSim"
-	@echo "  run-helloworld-verilator Run helloworld application on Verilator"
-	@echo "  run-keccak-questasim    Run keccak application on QuestaSim"
-	@echo "  run-test-hex-questasim  Run test-hex application on QuestaSim"
-	@echo "  run-xiftest-questasim   Run xiftest application on QuestaSim"
-	@echo "  run-fips-questasim      Run fips-test application on QuestaSim"
-	@echo "  run-shatest-questasim   Run sha-test application on QuestaSim"
-	@echo "  run-$(ISA_TYPE)-questasim Run $(ISA_TYPE)-test application on QuestaSim"
-	@echo "  run-isa-test-questasim  Run isa-test application on QuestaSim"
-	@echo "  run-testvector-kem-$(SCHEME)-clean-questasim Run testvector-kem application with specified scheme on QuestaSim"
-	@echo "  run-testvector-sign-$(SCHEME)-clean-questasim Run testvector-sign application with specified scheme on QuestaSim"
-	@echo "  vivado-keccak-fpga      Build bitstream for FPGA using Vivado"
-	@echo "  vivado-keccak-fpga-nobuild Build Vivado project for FPGA without building the bitstream"
-	@echo "  clean                   Clean the project"
-	@echo "  clean-sim               Clean simulation files"
-	@echo "  clean-app               Clean application files"
-	@echo "  clean-lock              Clean lock files"

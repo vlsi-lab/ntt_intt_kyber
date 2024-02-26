@@ -46,7 +46,7 @@ int main(void) {
     
 
     printf("Hi testvectors KEM!\n");
-    init_athos();
+    init_ip();
     CSR_CLEAR_BITS(CSR_REG_MCOUNTINHIBIT, 0x1);
     // Starting the performance counter
     CSR_WRITE(CSR_REG_MCYCLE, 0);

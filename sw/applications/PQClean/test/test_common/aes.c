@@ -69,7 +69,6 @@ int main(void) {
 
     unsigned int cycles;
     printf("start AES-TEST\n");
-    init_athos();
     CSR_CLEAR_BITS(CSR_REG_MCOUNTINHIBIT, 0x1);
     CSR_WRITE(CSR_REG_MCYCLE, 0);
     aes128_ecb_keyexp(&ctx128_ecb, key);

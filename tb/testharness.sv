@@ -34,12 +34,12 @@ module testharness #(
 
   import obi_pkg::*;
   import reg_pkg::*;
-  import athos_ip_x_heep_pkg::*;
+  import ntt_intt_ip_x_heep_pkg::*;
   import addr_map_rule_pkg::*;
 
   localparam SWITCH_ACK_LATENCY = 15;
-  localparam EXT_XBAR_NMASTER_RND = USE_EXTERNAL_DEVICE_EXAMPLE ? athos_ip_x_heep_pkg::EXT_XBAR_NMASTER : 1;
-  localparam HEEP_EXT_XBAR_NMASTER = USE_EXTERNAL_DEVICE_EXAMPLE ? athos_ip_x_heep_pkg::EXT_XBAR_NMASTER : 0;
+  localparam EXT_XBAR_NMASTER_RND = USE_EXTERNAL_DEVICE_EXAMPLE ? ntt_intt_ip_x_heep_pkg::EXT_XBAR_NMASTER : 1;
+  localparam HEEP_EXT_XBAR_NMASTER = USE_EXTERNAL_DEVICE_EXAMPLE ? ntt_intt_ip_x_heep_pkg::EXT_XBAR_NMASTER : 0;
 
   localparam int unsigned LOG_EXT_XBAR_NSLAVE = EXT_XBAR_NSLAVE > 32'd1 ? $clog2(
       EXT_XBAR_NSLAVE

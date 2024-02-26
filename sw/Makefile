@@ -57,14 +57,14 @@ INC_FOLDERS                += $(sort $(dir $(wildcard device/lib/crt/)))
 INC_FOLDERS                += $(sort $(dir $(wildcard external/lib/drivers/*/)))
 INC_FOLDERS                += $(sort $(dir $(wildcard external/lib/runtime/)))
 
-#ATHOS_IP driver
-LIB_DRIVERS                += $(wildcard external/lib/drivers/athos_ip/*.c)
-INC_DRIVERS                += $(wildcard external/lib/drivers/athos_ip)
+#IP driver
+LIB_DRIVERS                += $(wildcard external/lib/drivers/ntt_intt_ip/*.c)
+INC_DRIVERS                += $(wildcard external/lib/drivers/ntt_intt_ip)
 
 
 #FILEs for applications
-INC_FOLDERS                += applications/athos_ip_test/KECCAK
-INC_FOLDERS                += applications/athos_ip_test/BR_AES_CT64_BITSLICE_SBOX
+INC_FOLDERS                += applications/ip_test/NTT
+INC_FOLDERS                += applications/ip_test/INTT
 
 
 #PQClean applications
@@ -136,7 +136,7 @@ x_heep_applications/hello_world/hello_world.flash_exec.elf: x_heep_applications/
 		-L $(RISCV)/riscv32-unknown-elf/lib \
 		-lc -lm -lgcc -flto -ffunction-sections -fdata-sections -specs=nano.specs
 
-applications/athos_ip_test/app-$(IP_TYPE)/main.elf: applications/athos_ip_test/app-$(IP_TYPE)/main.c 
+applications/ip_test/app-$(IP_TYPE)/main.elf: applications/ip_test/app-$(IP_TYPE)/main.c 
 	$(RISCV_EXE_PREFIX)gcc -march=rv32imc -o $@ -w -Os -g -nostdlib \
 		$(CUSTOM_GCC_FLAGS) \
 		-DHOST_BUILD \
@@ -152,7 +152,7 @@ applications/athos_ip_test/app-$(IP_TYPE)/main.elf: applications/athos_ip_test/a
 		-lc -lm -lgcc -flto -ffunction-sections -fdata-sections -specs=nano.specs
 
 
-applications/athos_ip_test/$(IP_TYPE)/main.elf: applications/athos_ip_test/$(IP_TYPE)/main.c 
+applications/ip_test/$(IP_TYPE)/main.elf: applications/ip_test/$(IP_TYPE)/main.c 
 	$(RISCV_EXE_PREFIX)gcc -march=rv32imc -o $@ -w -Os -g -nostdlib \
 		$(CUSTOM_GCC_FLAGS) \
 		-DHOST_BUILD \
@@ -370,12 +370,6 @@ clean:
 	rm -rf x_heep_applications/*/*.dis \
 	rm -rf x_heep_applications/*/*.map \
 	rm -rf x_heep_applications/*/*.dump \
-	rm -rf applications/athos_ip_test/BR_AES_CT64_BITSLICE_SBOX/*.elf \
-	rm -rf applications/athos_ip_test/BR_AES_CT64_BITSLICE_SBOX/*.hex \
-	rm -rf applications/athos_ip_test/KECCAK/*.elf \
-	rm -rf applications/athos_ip_test/KECCAK/*.hex \
-	rm -rf applications/athos_ip_test/NTT/*.elf \
-	rm -rf applications/athos_ip_test/NTT/*.hex \
-	rm -rf applications/athos_ip_test/INTT/*.elf \
-	rm -rf applications/athos_ip_test/TRNG/*.hex \
-	rm -rf applications/athos_ip_test/TRNG/*.elf
+	rm -rf applications/ip_test/NTT/*.elf \
+	rm -rf applications/ip_test/NTT/*.hex \
+	rm -rf applications/ip_test/INTT/*.elf 

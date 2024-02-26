@@ -636,8 +636,8 @@ module ntt_intt_ip_ctrl_reg_top #(
   logic [1:0] addr_hit;
   always_comb begin
     addr_hit = '0;
-    addr_hit[0] = (reg_addr == ATHOS_IP_CTRL_CTRL_OFFSET);
-    addr_hit[1] = (reg_addr == ATHOS_IP_CTRL_STATUS_OFFSET);
+    addr_hit[0] = (reg_addr == NTT_INTT_IP_CTRL_CTRL_OFFSET);
+    addr_hit[1] = (reg_addr == NTT_INTT_IP_CTRL_STATUS_OFFSET);
   end
 
   assign addrmiss = (reg_re || reg_we) ? ~|addr_hit : 1'b0 ;
@@ -645,8 +645,8 @@ module ntt_intt_ip_ctrl_reg_top #(
   // Check sub-word write is permitted
   always_comb begin
     wr_err = (reg_we &
-              ((addr_hit[0] & (|(ATHOS_IP_CTRL_PERMIT[0] & ~reg_be))) |
-               (addr_hit[1] & (|(ATHOS_IP_CTRL_PERMIT[1] & ~reg_be)))));
+              ((addr_hit[0] & (|(NTT_INTT_IP_CTRL_PERMIT[0] & ~reg_be))) |
+               (addr_hit[1] & (|(NTT_INTT_IP_CTRL_PERMIT[1] & ~reg_be)))));
   end
 
   assign ctrl_c0_we = addr_hit[0] & reg_we & !reg_error;

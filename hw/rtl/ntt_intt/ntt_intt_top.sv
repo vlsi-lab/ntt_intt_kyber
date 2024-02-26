@@ -5,7 +5,7 @@
 // Designed by Alessandra Dolmeta
 // alessandra.dolmeta@polito.it
 
-import athos_pkg::*;
+import ntt_intt_pkg::*;
 
 
 module ntt_intt_top (
@@ -15,7 +15,7 @@ module ntt_intt_top (
     input logic start_fntt, start_intt,
     input logic [31:0] din,
     input logic din_en,
-    output athos_pkg::out_t dout,
+    output ntt_intt_pkg::out_t dout,
     output logic gnt_valid,
     input logic read_en,
     output logic done

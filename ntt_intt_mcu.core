@@ -5,7 +5,7 @@ CAPI=2:
 # SPDX-License-Identifier: Apache-2.0 WITH SHL-2.1
 
 name: polito:vlsi_lab:ntt_intt_mcu
-description: General framework of ATHOS
+description: General framework of NTT_INTT_XHEEP
 
 filesets:
 
@@ -26,14 +26,13 @@ filesets:
     - hw/rtl/ntt_intt_ip_top.sv
     - hw/rtl/ntt_intt_ip_x_heep_pkg.sv
     - hw/rtl/ntt_intt_mcu.sv
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/system/x_heep_system.sv
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/system/pad_ring.sv
     file_type: systemVerilogSource 
 
   files_rtl_vhdl:
     depend:
     - x-heep::packages
     - pulp-platform.org::common_cells
+    - x-heep:ip:pad_control
     files:
     - hw/rtl/ntt_intt/param.vhd
     - hw/rtl/ntt_intt/reg_rst.vhd
@@ -56,44 +55,35 @@ filesets:
     - hw/rtl/ntt_intt/ntt_intt.vhd
     file_type: vhdlSource
 
-
-  x_heep:
-    depend:
-    - x-heep::packages
-    - openhwgroup.org:systems:core-v-mini-mcu
-    - polito:vlsi_lab:ntt_intt_ip
-    - polito:vlsi_lab:athos_heep
-    files:
-
-
   x_heep_system:
     depend:
     - x-heep::packages
+    - pulp-platform.org::common_cells
+    - openhwgroup.org:systems:core-v-mini-mcu
     - x-heep:ip:pad_control
     files:
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/top/x_heep_system.sv
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/hw/system/pad_ring.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/system/x_heep_system.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/system/pad_ring.sv
     file_type: systemVerilogSource
 
   tb-harness_x_heep:
     files:
     - tb/tb_util.svh: {is_include_file: true}
     - tb/testharness.sv
-    - /home/alessandra.dolmeta/ATHOS/ATHOS/athos_top/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/tb/ext_xbar.sv
-    - /home/alessandra.dolmeta/ATHOS/ATHOS/athos_top/tb/ext_bus.sv 
+    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
     file_type: systemVerilogSource
 
   files_verilator_waiver_x_heep:
     files:
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/tb/tb.vlt
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/esl_epfl_x_heep/tb/tb.vlt
     file_type: vlt
 
   fpga-pynq-z2_x_heep:
     depend:
     - openhwgroup.org:systems:core-v-mini-mcu
     files:
-    - /home/alessandra.dolmeta/ATHOS/ATHOS/athos_top/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/tb/ext_xbar.sv
-    - /home/alessandra.dolmeta/ATHOS/ATHOS/athos_top/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/tb/ext_bus.sv
+    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
+    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_bus.sv
     file_type: systemVerilogSource
     
 
@@ -107,7 +97,7 @@ filesets:
 
   systemverilog_only_uart:
     files:
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/hw/vendor/lowrisc_opentitan/hw/dv/dpi/uartdpi/uartdpi.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/lowrisc_opentitan/hw/dv/dpi/uartdpi/uartdpi.sv
     file_type: systemVerilogSource
 
   remote_bitbang_dpi:
@@ -141,7 +131,7 @@ filesets:
 
   tb-sv_x_heep:
     files:
-    - hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/tb/tb_top.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/tb_top.sv
     file_type: systemVerilogSource
 
 
@@ -201,6 +191,7 @@ targets:
     #- x_heep
     - files_rtl_sv
     - files_rtl_vhdl
+    - x_heep_system
     toplevel: [x_heep_top]
 
   sim:
@@ -246,8 +237,8 @@ targets:
         - -pedanticerrors
         - -define MODELSIM
         vsim_options:
-        - -sv_lib ../../../hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/lowrisc_opentitan/hw/dv/dpi/uartdpi/uartdpi
-        - -sv_lib ../../../hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/pulp_platform_pulpissimo/rtl/tb/remote_bitbang/librbs
+        - -sv_lib ../../../hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/lowrisc_opentitan/hw/dv/dpi/uartdpi/uartdpi
+        - -sv_lib ../../../hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/pulp_platform_pulpissimo/rtl/tb/remote_bitbang/librbs
         - -voptargs=+acc
       verilator:
         mode: cc
@@ -265,23 +256,3 @@ targets:
           - '-LDFLAGS "-pthread -lutil -lelf"'
           - "-Wall"
   
-
-  # pynq-z2-arm-emulation_x_heep:
-  #   filesets:
-  #   - keccak_x_heep
-  #   default_tool: vivado
-  #   description: TUL Pynq-Z2 Board
-  #   filesets_append:
-  #   - x_heep_system
-  #   - fpga-pynq-z2-arm_x_heep
-  #   parameters:
-  #   - use_cv32e40p_corev_pulp? (COREV_PULP=1)
-  #   - "!use_cv32e40p_corev_pulp? (COREV_PULP=0)"
-  #   - use_cv32e40p_fpu? (FPU=1)
-  #   - "!use_cv32e40p_fpu? (FPU=0)"
-  #   - SYNTHESIS=true
-  #   tools:
-  #     vivado:
-  #       part: xc7z020clg400-1
-  #       jobs: 4
-  #   toplevel: [linux_femu_keccak]

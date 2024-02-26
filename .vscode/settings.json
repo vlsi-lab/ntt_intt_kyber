@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "hart.h": "c",
+        "rv_plic_regs.h": "c"
+    }
+}

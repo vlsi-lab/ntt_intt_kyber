@@ -103,19 +103,19 @@ package ntt_intt_ip_ctrl_reg_pkg;
   } ntt_intt_ip_ctrl_hw2reg_t;
 
   // Register offsets
-  parameter logic [BlockAw-1:0] ATHOS_IP_CTRL_CTRL_OFFSET = 3'h 0;
-  parameter logic [BlockAw-1:0] ATHOS_IP_CTRL_STATUS_OFFSET = 3'h 4;
+  parameter logic [BlockAw-1:0] NTT_INTT_IP_CTRL_CTRL_OFFSET = 3'h 0;
+  parameter logic [BlockAw-1:0] NTT_INTT_IP_CTRL_STATUS_OFFSET = 3'h 4;
 
   // Register index
   typedef enum int {
-    ATHOS_IP_CTRL_CTRL,
-    ATHOS_IP_CTRL_STATUS
+    NTT_INTT_IP_CTRL_CTRL,
+    NTT_INTT_IP_CTRL_STATUS
   } ntt_intt_ip_ctrl_id_e;
 
   // Register width information to check illegal writes
-  parameter logic [3:0] ATHOS_IP_CTRL_PERMIT [2] = '{
-    4'b 0011, // index[0] ATHOS_IP_CTRL_CTRL
-    4'b 0011  // index[1] ATHOS_IP_CTRL_STATUS
+  parameter logic [3:0] NTT_INTT_IP_CTRL_PERMIT [2] = '{
+    4'b 0011, // index[0] NTT_INTT_IP_CTRL_CTRL
+    4'b 0011  // index[1] NTT_INTT_IP_CTRL_STATUS
   };
 
 endpackage

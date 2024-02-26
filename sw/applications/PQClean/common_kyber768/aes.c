@@ -333,9 +333,6 @@ static uint32_t sub_word(uint32_t x) {
     br_aes_ct64_bitslice_Sbox(q);
     br_aes_ct64_ortho(q);
     return (uint32_t)q[0];
-    /*athos_ip_driver(q,q_out, 16, 2);
-    br_aes_ct64_ortho(q_out);
-    return (uint32_t)q_out[0];*/
 }
 
 static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, unsigned int key_len) {
