@@ -20,8 +20,7 @@ TARGET   			?= sim
 LINKER   			?= on_chip
 
 # X-HEEP configuration
-XHEEP_DIR			:= $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep
-ATHOS_DIR			:= $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos
+XHEEP_DIR			:= $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep
 MCU_CFG				?= $(ROOT_DIR)/config/mcu-gen.hjson
 PAD_CFG				?= $(ROOT_DIR)/config/heep-pads.hjson
 APP_DIR				:= $(ROOT_DIR)/sw/applications
@@ -61,13 +60,9 @@ TYPE ?= kem
 SCHEME ?= kyber512
 IMPLEMENTATION ?= clean
 
-ISA_TYPE ?= load64
-
 # List of valid TYPE and SCHEME values
-VALID_TYPES := kem sign
-VALID_SCHEMES := kyber512 kyber768 kyber1024 hqc-128 hqc-192 hqc-256 \
-                mceliece348864 mceliece348864f mceliece460896 mceliece460896f mceliece6688128 mceliece6688128f \
-                mceliece6960119 mceliece6960119f mceliece8192128 mceliece8192128f dilithium2 dilithium3 dilithium5 \
+VALID_TYPES := kem
+VALID_SCHEMES := kyber512 kyber768 kyber1024
                 
 
 #***********************************************************************************************
@@ -79,10 +74,8 @@ export MCU_CFG
 export PAD_CFG
 export EXT_PAD_CFG
 export EXTERNAL_DOMAINS
-export HEEP_DIR = $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep
-export ATHOS_DIR = $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos
+export HEEP_DIR = $(ROOT_DIR)/hw/vendor/polito_vlsi_lab_athos_heep
 XHEEP_MAKE		= $(HEEP_DIR)/external.mk
-ATHOS_MAKE		= $(ATHOS_DIR)/external.mk
 include Makefile.venv
 
 ifndef CONDA_DEFAULT_ENV
@@ -108,33 +101,12 @@ mcu-gen:
 #***********************************************************************************************
 # SYNC RULES	
 #***********************************************************************************************
-.PHONY: athos-sync
-athos-sync:
-	@echo "### Updating athos repository..."
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos/ ../athos/
-
-.PHONY: cvpx-sync
-cvpx-sync:
-	@echo "### Updating cvx repository..."
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_cv32e40x/rtl/ ../../cv32e40x/rtl
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_cv32e40x/bhv/ ../../cv32e40x/bhv
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_cv32e40x/bhv/include/ ../../cv32e40x/bhv/include
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_cv32e40x/bhv/include/ ../../cv32e40x/bhv/include
-
-athos-heep-sync:
-	@echo "### Updating athos_heep repository..."
-	rsync -a hw/vendor/polito_vlsi_lab_athos_heep/ ../athos_heep/
-
-athos-ip-sync:
-	@echo "### Updating athos_heep repository..."
-	rsync -a hw/vendor/polito_vlsi_lab_athos_ip/ ../athos_ip/
-
 esl_epfl_x_heep-sync:
 	@echo "### Modifiying esl_epfl_x_heep repository..."
-	rsync -a config/rv_plic.c hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/sw/device/lib/drivers/rv_plic/rv_plic.c
-	rsync -a config/rv_plic.h hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/sw/device/lib/drivers/rv_plic/rv_plic.h
-	rsync -a config/dma.c hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/sw/device/lib/drivers/dma/dma.c
-	rsync -a config/dma.h hw/vendor/polito_vlsi_lab_athos_heep/hw/vendor/esl_epfl_x_heep/sw/device/lib/drivers/dma/dma.h
+	rsync -a config/rv_plic.c hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/rv_plic/rv_plic.c
+	rsync -a config/rv_plic.h hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/rv_plic/rv_plic.h
+	rsync -a config/dma.c hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/dma/dma.c
+	rsync -a config/dma.h hw/vendor/polito_vlsi_lab_athos_heep/sw/device/lib/drivers/dma/dma.h
 
 .PHONY: heep-sync
 heep-sync:
