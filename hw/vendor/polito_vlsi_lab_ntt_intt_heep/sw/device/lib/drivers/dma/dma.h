@@ -15,46 +15,23 @@
 **
 ***************************************************************************
 */
-
-/***************************************************************************/
-/***************************************************************************/
-
-/**
-* @file   dma.h
-* @date   13/02/23
-* @brief  The Direct Memory Access (DMA) driver to set up and use the DMA
-* peripheral
-*/
-
 #ifndef _DMA_DRIVER_H
 #define _DMA_DRIVER_H
 
 /****************************************************************************/
-/**                                                                        **/
 /**                            MODULES USED                                **/
-/**                                                                        **/
 /****************************************************************************/
-
 #include <stddef.h>
 #include <stdint.h>
 
 #include "dma_structs.h"    // Generated
 #include "dma_regs.h"       // Generated
-
 #include "core_v_mini_mcu.h"
-
 #include "hart.h"           // Wait for interrupt
 
 /****************************************************************************/
-/**                                                                        **/
 /**                       DEFINITIONS AND MACROS                           **/
-/**                                                                        **/
 /****************************************************************************/
-
-
-/**
- * Wait Mode Defines
- */
 #define DMA_SPI_MODE_DISABLED     0x00
 #define DMA_SPI_MODE_SPI_RX       0x01
 #define DMA_SPI_MODE_SPI_TX       0x02
@@ -97,15 +74,12 @@ extern "C" {
  */
 typedef enum
 {
-    DMA_TRIG_MEMORY             = 0, /*!< Reads from memory or writes in
-    memory. */
+    DMA_TRIG_MEMORY             = 0, /*!< Reads from memory or writes in memory. */
     DMA_TRIG_SLOT_SPI_RX        = 1, /*!< Slot 1 (MEM < SPI). */
     DMA_TRIG_SLOT_SPI_TX        = 2, /*!< Slot 2 (MEM > SPI). */
     DMA_TRIG_SLOT_SPI_FLASH_RX  = 4, /*!< Slot 3 (MEM < SPI FLASH). */
     DMA_TRIG_SLOT_SPI_FLASH_TX  = 8, /*!< Slot 4 (MEM > SPI FLASH). */
     DMA_TRIG_SLOT_I2S           = 16,/*!< Slot 5 (I2S). */
-    DMA_TRIG_SLOT_EXT_TX        = 32,/*!< Slot 6 (External peripherals TX). */
-    DMA_TRIG_SLOT_EXT_RX        = 64,/*!< Slot 7 (External peripherals RX). */
     DMA_TRIG__size,      /*!< Not used, only for sanity checks. */
     DMA_TRIG__undef,     /*!< DMA will not be used. */
 } dma_trigger_slot_mask_t;
@@ -134,16 +108,7 @@ typedef enum
     DMA_DATA_TYPE__undef,   /*!< DMA will not be used. */
 } dma_data_type_t;
 
-/**
- * It is possible to choose the level of safety with which the DMA operation
- * should be configured.
- * Not performing checks reduces the DMA usage overhead, but may result in a
- * faulty operation, especially if the configurations set to the DMA are not
- * fixed but rather depend on the circumstance.
- * e.g. The source pointer is obtained as a result of a loop. It could happen
- * the pointer ends up pointing outside the memory range, or that the pointer
- * is close enough the the memory end to cause an overflow during reading.
- */
+
 typedef enum{
     DMA_PERFORM_CHECKS_ONLY_SANITY = 0, /*!< No checks will be performed.
     Only sanity checks will be performed that no values are off-limits or
@@ -155,12 +120,7 @@ typedef enum{
     DMA_PERFORM_CHECKS__size,       /*!< Not used, only for sanity checks. */
 } dma_perf_checks_t;
 
-/**
- * In some cases the DMA can overcome a misalignment issue if the data type is
- * set to a smaller size.
- * This action can be performed by the dma_configure() function if allowed by
- * the user.
- */
+
 typedef enum
 {
     DMA_DO_NOT_ENABLE_REALIGN  = 0, /*!< If a misalignment is detected, it will
@@ -170,10 +130,7 @@ typedef enum
     DMA_ENABLE_REALIGN__size,       /*!< Not used, only for sanity checks. */
 } dma_en_realign_t;
 
-/**
- * The mode of operation of the DMA. It determines what the DMA does when the
- * end of the transaction is reached.
- */
+
 typedef enum
 {
     DMA_TRANS_MODE_SINGLE   = DMA_MODE_MODE_VALUE_LINEAR_MODE, /*!< Only one transaction will be performed.*/
@@ -186,18 +143,6 @@ typedef enum
     DMA_TRANS_MODE__size,       /*!< Not used, only for sanity checks. */
 } dma_trans_mode_t;
 
-/**
- * Different possible actions that determine the end of the DMA transaction.
- * This choice does not affect the transaction, but only the way the
- * application is notified of its finalization.
- * Consider that for INTR and INTR_WAIT global interrupts must be enabled with:
- * CSR_SET_BITS(CSR_REG_MSTATUS, 0x8 ) (Or something of the sort).
- * e.g. For SPI transmission, the application may consider the transfer has
- * finished once the DMA has transferred all its data to the SPI buffer (Use
- * any en event), or might prefer to wait until the SPI has finished sending
- * all the data in its buffer (in which case POLLING could be chosen to disable
- *  DMA interrupts simply expect the SPI interrupt).
- */
 typedef enum
 {
     DMA_TRANS_END_POLLING,   /*!< Interrupt for the DMA will be disabled. The
@@ -210,19 +155,7 @@ typedef enum
     DMA_TRANS_END__size,     /*!< Not used, only for sanity checks. */
 } dma_trans_end_evt_t;
 
-/**
- * Possible returns of the dma_configure() function.
- * Some of these issues or not a problem per se, yet a combination of them
- * might be.
- * For this reason, each error has only one high bit. This way they can be
- * masked together using the bitwise OR operator:
- * ( DMA_CONFIG_x | DMA_CONFIG_y | DMA_CONFIG_z ).
- * The *_SRC and *_DST labels identify in which arrangements issues were
- * encountered.
- *
- * A flag can be unset using the bitwise AND and NOT operators:
- * x &= ~DMA_CONFIG_*
- */
+
 typedef enum
 {
     DMA_CONFIG_OK               = 0x0000, /*!< DMA transfer was successfully
@@ -254,23 +187,14 @@ typedef enum
     will return without the DMA performing any actions. */
 } dma_config_flags_t;
 
-/**
- * An environment is a region of memory defined by its start and end pointers.
- * The sole purpose of creating environments is preventing the DMA from writing
- * on restricted memory regions (outside the environment).
- */
+
 typedef struct
 {
     uint8_t *start; /*!< Pointer to the start of the environment. */
     uint8_t *end;   /*!< Pointer to the last byte inside the environment. */
 } dma_env_t;
 
-/**
- * A target is a region of memory from/to which the DMA can copy data.
- * It is defined by its start pointer and the size of the data that can be
- * copied. Furthermore, control parameters can be added to prevent the DMA
- * from reading/writing outside the boundaries of the target.
- */
+
 typedef struct
 {
     dma_env_t*              env;     /*!< The environment to which this
@@ -331,124 +255,32 @@ typedef struct
 /**                          EXPORTED FUNCTIONS                            **/
 /**                                                                        **/
 /****************************************************************************/
-
-/**
- * @brief Attends the plic interrupt.
- */
 void handler_irq_dma( uint32_t id );
 
-/**
- * @brief This is a non-weak implementation of the function declared in
- * fast_intr_ctrl.c
- */
 void fic_irq_dma(void);
 
-/**
- *@brief Takes all DMA configurations to a state where no accidental
- * transaction can be performed.
- * It can be called anytime to reset the DMA control block.
- * @param peri Pointer to a register address following the dma structure. By
- * default (peri == NULL), the integrated DMA will be used.
- */
 void dma_init( dma *peri );
 
-/**
- * @brief Creates a transaction that can be loaded into the DMA.
- * @param p_trans Pointer to the dma_transaction_t structure where configuration
- * should be allocated. The content of this pointer must be a static variable.
- * @note Variables size_b, inc_b and type will be set by this function. It is
- * not necessary to set them externally before calling it.
- * @param p_enRealign Whether to allow the DMA to take a smaller data type
- * in order to counter misalignments between the selected data type and the
- * start pointer.
- * @param p_check Whether integrity checks should be performed.
- * @retval DMA_CONFIG_CRITICAL_ERROR if an error was detected in the transaction
- * to be loaded.
- * @retval DMA_CONFIG_OK == 0 otherwise.
- */
-dma_config_flags_t dma_validate_transaction(  dma_trans_t       *p_trans,
-                                            dma_en_realign_t  p_enRealign,
-                                            dma_perf_checks_t p_check );
+dma_config_flags_t dma_load_transaction( dma_trans_t* p_trans, uint32_t size);
 
-/**
- * @brief The transaction configuration (that has been previously validated
- * through the creation functions) is effectively transferred into the DMA
- * registers.
- * @param p_trans Pointer to the transaction struct to be loaded into the DMA.
- * The content of this pointer must be a static variable.
- * @return A configuration flags mask. Each individual flag can be accessed
- * with a bitwise AND ( ret & DMA_CONFIG_* ). It is not recommended to query
- * the result from inside target structure as an error could have appeared
- * before the creation of the structure.
- */
-dma_config_flags_t dma_load_transaction( dma_trans_t* p_trans );
+dma_config_flags_t dma_load_transaction_keccak( dma_trans_t *p_trans);
 
-/**
- * @brief Launches the loaded transaction.
- * @param p_trans A pointer to the desired transaction. This is only used to
- * double check that the loaded transaction is the desired one.
- *                  This check can be avoided by passing a NULL pointer.
- * @retval DMA_CONFIG_CRITICAL_ERROR if the passed pointer does not correspond
- * itself with the loaded transaction (i.e. it is likely the transaction to be
- * loaded is not the desired one).
- * @retval DMA_CONFIG_OK == 0 otherwise.
- */
 dma_config_flags_t dma_launch( dma_trans_t* p_trans );
 
-/**
- * @brief Read from the done register of the DMA. Additionally decreases the
- * count of simultaneously-launched transactions. Be careful when calling this
- * function  * after it has returned 1, unless there is another transaction
- * running or a new transaction was launched.
- * Be careful when calling this function if interrupts were chosen as the end
- * event.
- * @return Whether the DMA is working or not. It starts returning 0 as soon as
- * the dma_launch function has returned.
- * @retval 0 - DMA is working.
- * @retval 1 - DMA has finished the transmission. DMA is idle.
- */
 uint32_t dma_is_ready(void);
 
-/**
- * @brief Get the number of windows that have already been written. Resets on
- * the start of each transaction.
- * @return The number of windows that have been written from this transaction.
- */
 uint32_t dma_get_window_count(void);
 
-/**
- * @brief Prevent the DMA from relaunching the transaction automatically after
- * finishing the current one. It does not affect the currently running
- * transaction. It has no effect if the DMA is operating in SINGULAR
- * transaction mode.
- */
+
 void dma_stop_circular(void);
 
-/**
-* @brief DMA interrupt handler.
-* `dma.c` provides a weak definition of this symbol, which can be overridden
-* at link-time by providing an additional non-weak definition.
-*/
+
 void dma_intr_handler_trans_done(void);
 
-/**
-* @brief DMA interrupt handler.
-* `dma.c` provides a weak definition of this symbol, which can be overridden
-* at link-time by providing an additional non-weak definition.
-*/
+
 void dma_intr_handler_window_done(void);
 
-/**
- * @brief This weak implementation allows the user to override the threshold
- * in which a warning is raised for a transaction to window size ratio that
- * could cause a loss of syncronism.
- * Crete this override with caution. For small transaction sizes, even a large
- * window size might cause loss of syncronism (e.g. If the DMA is copying 10
- * bytes and the one interrupt is received every 5 bytes, there is a large
- * chance that the DMA will finish copying the remaining 5 bytes before the
- * CPU managed to process the previous 5 bytes.
- * During the non-weak implementation, return 0 to disable this check.
- */
+
 uint8_t dma_window_ratio_warning_threshold(void);
 
 /****************************************************************************/
@@ -461,8 +293,3 @@ uint8_t dma_window_ratio_warning_threshold(void);
 #endif
 
 #endif /* _DMA_DRIVER_H */
-/****************************************************************************/
-/**                                                                        **/
-/**                                EOF                                     **/
-/**                                                                        **/
-/****************************************************************************/

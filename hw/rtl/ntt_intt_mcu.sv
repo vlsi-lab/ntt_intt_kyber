@@ -125,7 +125,7 @@ module ntt_intt_mcu
   );
 
   // eXtension Interface
-  cv32e40x_if_xif #() ext_if ();
+  if_xif #() ext_if ();
 
   x_heep_system #(
       .COREV_PULP(COREV_PULP),

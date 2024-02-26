@@ -120,7 +120,7 @@ __attribute__((optimize("O0"))) static void handler_irq_dummy( uint32_t dummy );
 /*                            GLOBAL VARIABLES                              */
 /**                                                                        **/
 /****************************************************************************/
-
+uint8_t plic_intr_flag = 0;
 /**
  * Array for the ISRs. Length automatically generated when compiling and 
  * assigned to QTY_INTR.
@@ -142,6 +142,7 @@ void handler_irq_external(void)
 
     // Calls the proper handler
     handlers[int_id](int_id);
+    plic_intr_flag = 1;
     plic_irq_complete(&int_id);
 }
 

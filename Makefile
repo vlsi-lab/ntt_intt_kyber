@@ -107,6 +107,7 @@ esl_epfl_x_heep-sync:
 	rsync -a config/rv_plic.h hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/rv_plic/rv_plic.h
 	rsync -a config/dma.c hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/dma/dma.c
 	rsync -a config/dma.h hw/vendor/polito_vlsi_lab_ntt_intt_heep/sw/device/lib/drivers/dma/dma.h
+	rsync -a config/cve2_core.sv hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/vendor/openhwgroup_cv32e20/rtl/cve2_core.sv
 
 .PHONY: heep-sync
 heep-sync:

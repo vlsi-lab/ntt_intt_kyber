@@ -159,7 +159,20 @@ typedef enum plic_irq_trigger {
   kPlicIrqTriggerEdge
 } plic_irq_trigger_t;
 
+/****************************************************************************/
+/**                                                                        **/
+/*                           EXPORTED VARIABLES                             */
+/**                                                                        **/
+/****************************************************************************/
 
+/**
+ * Flag used to handle the wait for interrupt.
+ * The core can test this variable to check if it has to wait
+ * for an interrupt coming from the RV_PLIC.
+ * When an interrupt occurs, this flag is set to 1 by the plic in order
+ * for the core to continue with the execution of the program.
+*/
+extern uint8_t plic_intr_flag;
 /****************************************************************************/
 /**                                                                        **/
 /*                          EXPORTED FUNCTIONS                              */
