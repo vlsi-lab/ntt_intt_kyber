@@ -49,7 +49,7 @@ module ntt_intt_ip_dp
 
 
     //NTT-INTT-PWM INSTANTIATION
-    ntt_intt_top i_ntt_intt_top (
+    ntt_intt i_ntt_intt (
         .clk(clk),
         .rst(!rst_n),
         .load_a_f(ctrl[1]),

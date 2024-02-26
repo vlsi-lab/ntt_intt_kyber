@@ -11,7 +11,7 @@
 module ntt_intt_mcu 
   import obi_pkg::*;
   import reg_pkg::*;
-  import ntt_intt_x_heep_pkg::*;
+  import ntt_intt_ip_x_heep_pkg::*;
 #(
     parameter COREV_PULP = 0,
     parameter FPU        = 0,
@@ -90,16 +90,16 @@ module ntt_intt_mcu
 
 
   // Since not used an external device with master port 
-  assign ext_master_req[ntt_intt_x_heep_pkg::EXT_MASTER0_IDX].req = '0;
-  assign ext_master_req[ntt_intt_x_heep_pkg::EXT_MASTER0_IDX].we = '0;
-  assign ext_master_req[ntt_intt_x_heep_pkg::EXT_MASTER0_IDX].be = '0;
-  assign ext_master_req[ntt_intt_x_heep_pkg::EXT_MASTER0_IDX].addr = '0;
-  assign ext_master_req[ntt_intt_x_heep_pkg::EXT_MASTER0_IDX].wdata = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].req = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].we = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].be = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].addr = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].wdata = '0;
 
   
   // External interrupts
   logic [core_v_mini_mcu_pkg::NEXT_INT-1:0] ext_intr_vector;
-  logic 				    athos_ip_intr; 
+  logic 				    ntt_intt_ip_intr; 
 
   // External subsystems
   logic [core_v_mini_mcu_pkg::EXTERNAL_DOMAINS-1:0] external_subsystem_rst_n;
@@ -111,17 +111,17 @@ module ntt_intt_mcu
       ext_intr_vector[i] = 1'b0;
     end
     // Re-assign the interrupt lines used here
-    ext_intr_vector[0] = athos_ip_intr;
+    ext_intr_vector[0] = ntt_intt_ip_intr;
   end
 
-  athos_ip_top athos_ip_top_i (
+  ntt_intt_ip_top ntt_intt_ip_top_i (
       .clk_i,
       .rst_ni,
       .slave_req_i(ext_slave_req),
       .slave_resp_o(ext_slave_resp),
       .reg_req_i(ext_periph_slave_req),
       .reg_rsp_o(ext_periph_slave_resp),
-      .athos_ip_intr_o(athos_ip_intr)
+      .ntt_intt_ip_intr_o(ntt_intt_ip_intr)
   );
 
   // eXtension Interface
@@ -131,7 +131,7 @@ module ntt_intt_mcu
       .COREV_PULP(COREV_PULP),
       .FPU(FPU),
       .ZFINX(ZFINX),
-      .EXT_XBAR_NMASTER(ntt_intt_x_heep_pkg::EXT_XBAR_NMASTER)
+      .EXT_XBAR_NMASTER(ntt_intt_ip_x_heep_pkg::EXT_XBAR_NMASTER)
   ) x_heep_system_i (
       .clk_i,
       .rst_ni,
@@ -231,7 +231,7 @@ module ntt_intt_mcu
       .clk_i                    (clk_i),
       .rst_ni                   (rst_ni),
       .addr_map_i               (EXT_XBAR_ADDR_RULES),
-      .default_idx_i            (ATHOS_IP_IDX[LOG_EXT_XBAR_NSLAVE-1:0]),
+      .default_idx_i            (NTT_INTT_IP_IDX[LOG_EXT_XBAR_NSLAVE-1:0]),
       .heep_core_instr_req_i    (heep_core_instr_req),
       .heep_core_instr_resp_o   (heep_core_instr_resp),
       .heep_core_data_req_i     (heep_core_data_req),

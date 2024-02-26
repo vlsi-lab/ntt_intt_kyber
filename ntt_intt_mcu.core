@@ -71,6 +71,7 @@ filesets:
     - tb/tb_util.svh: {is_include_file: true}
     - tb/testharness.sv
     - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
+    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/tb/ext_bus.sv 
     file_type: systemVerilogSource
 
   files_verilator_waiver_x_heep:

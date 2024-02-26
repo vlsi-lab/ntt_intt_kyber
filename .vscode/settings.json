@@ -1,6 +1,12 @@
 {
     "files.associations": {
         "hart.h": "c",
-        "rv_plic_regs.h": "c"
+        "rv_plic_regs.h": "c",
+        "rv_plic_structs.h": "c",
+        "rv_plic.h": "c",
+        "ntt_intt_ip_ctrl_auto.h": "c",
+        "csr.h": "c",
+        "core_v_mini_mcu.h": "c",
+        "ntt_intt_ip_data_auto.h": "c"
     }
 }

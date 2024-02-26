@@ -3,16 +3,13 @@
 #include <string.h>
 
 #include "core_v_mini_mcu.h"
-#include "athos_ip_x_heep.h"
-#include "init_athos_ip.h"
+#include "ntt_intt_ip_x_heep.h"
+#include "init_ip.h"
 #include "csr.h"
 #include "rv_plic.h"
 #include "rv_plic_regs.h"
 #include "rv_plic_structs.h"
 #include "hart.h"
-
-
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
