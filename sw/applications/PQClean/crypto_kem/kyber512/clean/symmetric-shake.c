@@ -4,7 +4,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include <stdio.h>
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_kyber_shake128_absorb
@@ -16,11 +15,10 @@
 *              - uint8_t i: additional byte of input
 *              - uint8_t j: additional byte of input
 **************************************************/
-void PQCLEAN_KYBER512_CLEAN_kyber_shake128_absorb(uint64_t *state,
+void PQCLEAN_KYBER512_CLEAN_kyber_shake128_absorb(xof_state *state,
         const uint8_t seed[KYBER_SYMBYTES],
         uint8_t x,
         uint8_t y) {
-
     uint8_t extseed[KYBER_SYMBYTES + 2];
 
     memcpy(extseed, seed, KYBER_SYMBYTES);
@@ -46,8 +44,8 @@ void PQCLEAN_KYBER512_CLEAN_kyber_shake256_prf(uint8_t *out, size_t outlen, cons
 
     memcpy(extkey, key, KYBER_SYMBYTES);
     extkey[KYBER_SYMBYTES] = nonce;
-    //printf("%ld\n", sizeof(extkey));
-    shake256(out, outlen, key, 32);
+
+    shake256(out, outlen, extkey, sizeof(extkey));
 }
 
 /*************************************************
@@ -69,5 +67,5 @@ void PQCLEAN_KYBER512_CLEAN_kyber_shake256_rkprf(uint8_t out[KYBER_SSBYTES], con
     shake256_inc_absorb(&s, input, KYBER_CIPHERTEXTBYTES);
     shake256_inc_finalize(&s);
     shake256_inc_squeeze(out, KYBER_SSBYTES, &s);
-    //shake256_inc_ctx_release(&s);
+    shake256_inc_ctx_release(&s);
 }

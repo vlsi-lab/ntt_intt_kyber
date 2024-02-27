@@ -55,6 +55,17 @@ filesets:
     - hw/rtl/ntt_intt/ntt_intt.vhd
     file_type: vhdlSource
 
+  pad_ring_synth: 
+    depend:
+    - x-heep:ip:pad_control
+    files:
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/pad_cell_bypass_input.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/pad_cell_bypass_output.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/pad_cell_inout.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/pad_cell_input.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/pad_cell_output.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/simulation/sram_wrapper.sv
+
   x_heep_system:
     depend:
     - x-heep::packages
@@ -62,16 +73,44 @@ filesets:
     - openhwgroup.org:systems:core-v-mini-mcu
     - x-heep:ip:pad_control
     files:
+    - tb/ext_bus.sv 
+    - tb/ext_xbar.sv 
     - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/system/x_heep_system.sv
     - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/system/pad_ring.sv
     file_type: systemVerilogSource
+  
+  ip-asic:
+    depend:
+    - technology::prim_mytech
+
+  rtl-fpga:
+    files:
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/xilinx_core_v_mini_mcu_wrapper.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/sram_wrapper.sv
+    file_type: systemVerilogSource
+
+  ip-fpga:
+    files:
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/scripts/xilinx_generate_clk_wizard.tcl:  { file_type: tclSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/scripts/generate_sram.tcl:  { file_type: tclSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/prim_xilinx_clk.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/cv32e40p_xilinx_clock_gate.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/cv32e40x_xilinx_clock_gate.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/cve2_xilinx_clock_gate.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/cv32e40px_xilinx_clock_gate.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/pad_cell_input_xilinx.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/pad_cell_output_xilinx.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/pad_cell_inout_xilinx.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/pad_cell_bypass_input_xilinx.sv:  { file_type: systemVerilogSource }
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/pad_cell_bypass_output_xilinx.sv:  { file_type: systemVerilogSource }
+
 
   tb-harness_x_heep:
     files:
     - tb/tb_util.svh: {is_include_file: true}
     - tb/testharness.sv
-    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
-    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/tb/ext_bus.sv 
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
+    - tb/ext_bus.sv 
     file_type: systemVerilogSource
 
   files_verilator_waiver_x_heep:
@@ -83,9 +122,26 @@ filesets:
     depend:
     - openhwgroup.org:systems:core-v-mini-mcu
     files:
-    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
-    - /home/alessandra.dolmeta/ATHOS/ntt_intt_kyber/hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_bus.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_xbar.sv
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/tb/ext_bus.sv
     file_type: systemVerilogSource
+  
+  xdc-fpga-nexys:
+    files:
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/constraints/nexys/pin_assign.xdc
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/constraints/nexys/constraints.xdc
+    file_type: xdc
+
+  xdc-fpga-pynq-z2:
+    files:
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/constraints/pynq-z2/pin_assign.xdc
+    - hw/vendor/polito_vlsi_lab_ntt_intt_heep/hw/fpga/constraints/pynq-z2/constraints.xdc
+    file_type: xdc
+
+  netlist-fpga:
+    files:
+    - build/polito:vlsi_lab:ntt_intt_mcu/nexys-a7-100t-vivado/core_v_mini_mcu_xiling_postsynth.v
+    file_type: verilogSource
     
 
   systemverilog_only_simjtag:
@@ -140,24 +196,48 @@ parameters:
   COREV_PULP:
     datatype: int
     paramtype: vlogparam
+    description: |
+      Enables COREV_PULP custom RISC-V extension on the CV32E40P core. Admitted values: 1|0.
     default: 0
   FPU:
     datatype: int
     paramtype: vlogparam
+    description: |
+      Enables RV32F RISC-V extension on the CV32E40P core. Admitted values: 1|0.
     default: 0
   JTAG_DPI:
     datatype: int
     paramtype: vlogparam
+    description: |
+      Enables testbench JTAG DIPs. Admitted values: 1|0.
+    default: 0
+  X_EXT:
+    datatype: int
+    paramtype: vlogparam
+    description: |
+      Enables CORE-V-XIF interface for the CV32E40X and CV32E40PX cores. Admitted values: 1|0.
     default: 0
   USE_EXTERNAL_DEVICE_EXAMPLE:
-    datatype: bool
-    paramtype: vlogdefine
-    default: false
+    datatype: int
+    paramtype: vlogparam
+    description: |
+      Enables testbench modules compilation. Admitted values: 1|0.
+    default: 1
   USE_UPF:
     datatype: bool
     paramtype: vlogdefine
-    default: false
+    description: |
+      Enables simulation with UPF with Modelsim/VCS
+  REMOVE_OBI_FIFO:
+    datatype: bool
+    paramtype: vlogdefine
+    description: |
+      Remove the FIFO between the BUS and the peripherals subsystems
   SYNTHESIS:
+    datatype: bool
+    paramtype: vlogdefine
+    default: false
+  VERILATOR: #used by SV2V
     datatype: bool
     paramtype: vlogdefine
     default: false
@@ -189,7 +269,6 @@ scripts:
 targets:
   default: &default_target
     filesets:
-    #- x_heep
     - files_rtl_sv
     - files_rtl_vhdl
     - x_heep_system
@@ -256,4 +335,69 @@ targets:
           - '-CFLAGS "-std=c++11 -Wall -g -fpermissive"'
           - '-LDFLAGS "-pthread -lutil -lelf"'
           - "-Wall"
+  
+  asic_synthesis:
+    <<: *default_target
+    default_tool: design_compiler
+    description: Design Compiler Script
+    parameters:
+    - PRIM_DEFAULT_IMPL=prim_pkg::your_target_technology
+    - COREV_PULP
+    - X_EXT
+    - FPU
+    - SYNTHESIS=true
+    - REMOVE_OBI_FIFO
+    filesets_append:
+    - pad_ring_synth
+    - ip-asic
+    toplevel: [ntt_intt_mcu]
+    tools:
+      design_compiler:
+        script_dir:
+        - ../../../scripts/synthesis/dc_shell
+        report_dir:
+        - report
+        dc_script:
+        - dc_script.tcl
+  
+  nexys-a7-100t:
+    <<: *default_target
+    default_tool: vivado
+    description: Digilent Nexys-A7-100T Board
+    filesets_append:
+    - rtl-fpga
+    - ip-fpga
+    - xdc-fpga-nexys
+    parameters:
+    - COREV_PULP
+    - FPU
+    - X_EXT
+    - SYNTHESIS=true
+    - REMOVE_OBI_FIFO
+    tools:
+      vivado:
+        part: xc7a100tcsg324-1
+    toplevel: [xilinx_core_v_mini_mcu_wrapper]  
+
+  pynq-z2:
+    <<: *default_target
+    default_tool: vivado
+    description: TUL Pynq-Z2 Board
+    filesets_append:
+    - files_rtl_vhdl
+    - files_rtl_sv
+    - x_heep_system
+    - rtl-fpga
+    - ip-fpga
+    - xdc-fpga-pynq-z2
+    parameters:
+    - COREV_PULP
+    - FPU
+    - X_EXT
+    - SYNTHESIS=true
+    - REMOVE_OBI_FIFO
+    tools:
+      vivado:
+        part: xc7z020clg400-1
+    toplevel: [xilinx_core_v_mini_mcu_wrapper]
   

@@ -157,8 +157,6 @@ ifeq (,$(filter $(SCHEME),$(VALID_SCHEMES)))
 endif
 
 
-
-
 app-testvectors-kem-$(SCHEME)_clean: check-parameters
 	$(MAKE) -C sw applications/PQClean/test/crypto_kem/testvectors-$(SCHEME)_clean.hex PROJECT=$(PROJECT) TARGET=$(TARGET)
 	riscv32-unknown-elf-objdump -d sw/applications/PQClean/test/crypto_kem/testvectors-$(SCHEME)_clean.elf > dis/testvectors-$(SCHEME)_clean.s
@@ -205,7 +203,7 @@ verilator-sim:
 
 run-$(IP_TYPE)-questasim: 
 	cd ./build/polito_vlsi_lab_ntt_intt_mcu_0/sim-modelsim; \
-	make run PLUSARGS="c firmware=../../../sw/applications/ip_test/$(IP_TYPE)/main.hex"; \
+	make run-gui PLUSARGS="c firmware=../../../sw/applications/ip_test/$(IP_TYPE)/main.hex"; \
 	cat uart0.log; \
 	cd ../../..;
 
@@ -222,11 +220,15 @@ run-testvector-kem-$(SCHEME)-clean-questasim:
 ## Builds (synthesis and implementation) the bitstream for the FPGA version using Vivado
 ## @param FPGA_BOARD=nexys-a7-100t,pynq-z2
 ## @param FUSESOC_FLAGS=--flag=<flagname>
-vivado-keccak-fpga:
-	$(FUSESOC) --cores-root . run --no-export --target=$(FPGA_BOARD) $(FUSESOC_FLAGS) --setup --build polito:vlsi_lab:ntt_intt_mcu 2>&1 | tee buildvivado.log
+vivado-fpga:
+	$(FUSESOC) --cores-root . run --no-export --target=$(FPGA_BOARD) $(FUSESOC_FLAGS) --build polito:vlsi_lab:ntt_intt_mcu ${FUSESOC_PARAM} 2>&1 | tee buildvivado.log
 
-vivado-keccak-fpga-nobuild:
-	$(FUSESOC) --cores-root . run --no-export --target=$(FPGA_BOARD) $(FUSESOC_FLAGS) --setup polito:vlsi_lab:ntt_intt_mcu 2>&1 | tee buildvivado.log
+vivado-fpga-nobuild:
+	$(FUSESOC) --cores-root . run --no-export --target=$(FPGA_BOARD) $(FUSESOC_FLAGS) --setup polito:vlsi_lab:ntt_intt_mcu ${FUSESOC_PARAM} 2>&1 | tee buildvivado.log
+
+asic:
+	$(FUSESOC) --cores-root . run --no-export --target=asic_synthesis $(FUSESOC_FLAGS) --setup polito:vlsi_lab:ntt_intt_mcu ${FUSESOC_PARAM} 2>&1 | tee builddesigncompiler.log
+
 
 #***********************************************************************************************
 # CLEAN

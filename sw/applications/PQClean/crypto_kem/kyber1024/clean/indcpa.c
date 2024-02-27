@@ -121,11 +121,8 @@ static unsigned int rej_uniform(int16_t *r,
 
     ctr = pos = 0;
     while (ctr < len && pos + 3 <= buflen) {
-        //val0 = ((buf[pos + 0] >> 0) | ((uint16_t)buf[pos + 1] << 8)) & 0xFFF;
-        //val1 = ((buf[pos + 1] >> 4) | ((uint16_t)buf[pos + 2] << 4)) & 0xFFF;
-        asm volatile (".insn r 0x0b, 0x1, 40, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (val0)  : [src] "r" (buf[pos + 0]), [src2] "r" (buf[pos + 1]) :  );
-        asm volatile (".insn r 0x0b, 0x1, 41, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (val1)  : [src] "r" (buf[pos + 1]), [src2] "r" (buf[pos + 2]) :  );
-       
+        val0 = ((buf[pos + 0] >> 0) | ((uint16_t)buf[pos + 1] << 8)) & 0xFFF;
+        val1 = ((buf[pos + 1] >> 4) | ((uint16_t)buf[pos + 2] << 4)) & 0xFFF;
         pos += 3;
 
         if (val0 < KYBER_Q) {
@@ -139,8 +136,8 @@ static unsigned int rej_uniform(int16_t *r,
     return ctr;
 }
 
-//#define gen_a(A,B)  PQCLEAN_KYBER1024_CLEAN_gen_matrix(A,B,0)
-//#define gen_at(A,B) PQCLEAN_KYBER1024_CLEAN_gen_matrix(A,B,1)
+#define gen_a(A,B)  PQCLEAN_KYBER1024_CLEAN_gen_matrix(A,B,0)
+#define gen_at(A,B) PQCLEAN_KYBER1024_CLEAN_gen_matrix(A,B,1)
 
 /*************************************************
 * Name:        PQCLEAN_KYBER1024_CLEAN_gen_matrix
@@ -159,28 +156,19 @@ static unsigned int rej_uniform(int16_t *r,
 void PQCLEAN_KYBER1024_CLEAN_gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed) {
     unsigned int ctr, i, j, k;
     unsigned int buflen, off;
-    uint8_t buf[506];
+    uint8_t buf[GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES + 2];
     xof_state state;
-
-    uint8_t extseed[KYBER_SYMBYTES + 2];
-    memcpy(extseed, seed, KYBER_SYMBYTES);
 
     for (i = 0; i < KYBER_K; i++) {
         for (j = 0; j < KYBER_K; j++) {
             if (transposed) {
-                //xof_absorb(&state, seed, (uint8_t)i, (uint8_t)j);
-                extseed[KYBER_SYMBYTES + 0] = (uint8_t)i;
-                extseed[KYBER_SYMBYTES + 1] = (uint8_t)j;
-                shake128_absorb(&state, extseed, sizeof(extseed));
+                xof_absorb(&state, seed, (uint8_t)i, (uint8_t)j);
             } else {
-                //xof_absorb(&state, seed, (uint8_t)j, (uint8_t)i);
-                extseed[KYBER_SYMBYTES + 0] = (uint8_t)j;
-                extseed[KYBER_SYMBYTES + 1] = (uint8_t)i;
-                shake128_absorb(&state, extseed, sizeof(extseed));
+                xof_absorb(&state, seed, (uint8_t)j, (uint8_t)i);
             }
 
             xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
-            buflen = 504;
+            buflen = GEN_MATRIX_NBLOCKS * XOF_BLOCKBYTES;
             ctr = rej_uniform(a[i].vec[j].coeffs, KYBER_N, buf, buflen);
 
             while (ctr < KYBER_N) {
@@ -192,7 +180,7 @@ void PQCLEAN_KYBER1024_CLEAN_gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYM
                 buflen = off + XOF_BLOCKBYTES;
                 ctr += rej_uniform(a[i].vec[j].coeffs + ctr, KYBER_N - ctr, buf, buflen);
             }
-            //xof_ctx_release(&state);
+            xof_ctx_release(&state);
         }
     }
 }
@@ -220,10 +208,9 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_keypair_derand(uint8_t pk[KYBER_INDCPA_PUBLI
     uint8_t nonce = 0;
     polyvec a[KYBER_K], e, pkpv, skpv;
 
-    //hash_g(buf, coins, KYBER_SYMBYTES);
-    sha3_512(buf, coins, KYBER_SYMBYTES);
+    hash_g(buf, coins, KYBER_SYMBYTES);
 
-    PQCLEAN_KYBER1024_CLEAN_gen_matrix(a, publicseed, 0);
+    gen_a(a, publicseed);
 
     for (i = 0; i < KYBER_K; i++) {
         PQCLEAN_KYBER1024_CLEAN_poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
@@ -284,7 +271,7 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
 
     unpack_pk(&pkpv, seed, pk);
     PQCLEAN_KYBER1024_CLEAN_poly_frommsg(&k, m);
-    PQCLEAN_KYBER1024_CLEAN_gen_matrix(at, seed, 1);
+    gen_at(at, seed);
 
     for (i = 0; i < KYBER_K; i++) {
         PQCLEAN_KYBER1024_CLEAN_poly_getnoise_eta1(sp.vec + i, coins, nonce++);
@@ -356,6 +343,7 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_dec(uint8_t m[KYBER_INDCPA_MSGBYTES],
     PQCLEAN_KYBER1024_CLEAN_polyvec_basemul_acc_montgomery(&mp, &skpv, &b);
     //PQCLEAN_KYBER1024_CLEAN_poly_invntt_tomont(&mp);
     intt_driver(mp.coeffs, mp.coeffs);
+
     PQCLEAN_KYBER1024_CLEAN_poly_sub(&mp, &v, &mp);
     PQCLEAN_KYBER1024_CLEAN_poly_reduce(&mp);
 

@@ -36,6 +36,7 @@ module ntt_intt_ip
     logic               keccak_ready;
 
     logic cu_store_i, cu_start_i, cu_load_i;
+    logic dp_start_i, done, status_0;
 
 
     assign operation = reg_file_to_ip_ctrl_i.ctrl.operation.q;

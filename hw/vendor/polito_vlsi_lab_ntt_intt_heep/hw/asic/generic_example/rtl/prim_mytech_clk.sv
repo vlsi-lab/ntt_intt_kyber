@@ -9,10 +9,12 @@ module mytech_clk_gating (
    output logic clk_o
 );
 
-
-  /*
-    add here your standard cell
-  */
+    CKLNQD16LVT CKLNQD16LVT_i (
+      .TE(test_en_i),
+      .E(en_i),
+      .CP(clk_i),
+      .Q(clk_o)
+    );
 
 
 endmodule

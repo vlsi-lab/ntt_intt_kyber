@@ -68,17 +68,11 @@ INC_FOLDERS                += applications/ip_test/INTT
 
 
 #PQClean applications
-ifeq ($(SCHEME), kyber512)
-	LIB_DRIVERS                += $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*.c)
-	INC_FOLDERS                += $(sort $(dir $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*)))
-	INC_FOLDERS                += applications/PQClean/common
-	LIB_DRIVERS                += $(wildcard applications/PQClean/common/*.c)
-else 
-	LIB_DRIVERS                += $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*.c)
-	INC_FOLDERS                += $(sort $(dir $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*)))
-	INC_FOLDERS                += applications/PQClean/common_kyber768
-	LIB_DRIVERS                += $(wildcard applications/PQClean/common_kyber768/*.c)
-endif
+LIB_DRIVERS                += $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*.c)
+INC_FOLDERS                += $(sort $(dir $(wildcard applications/PQClean/crypto_kem/$(SCHEME)/clean/*)))
+INC_FOLDERS                += applications/PQClean/common
+LIB_DRIVERS                += $(wildcard applications/PQClean/common/*.c)
+
 
 
 #SIGN folders

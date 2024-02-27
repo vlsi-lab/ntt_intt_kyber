@@ -65,9 +65,9 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
 *
 * Returns 16-bit integer congruent to a*b*R^{-1} mod q
 **************************************************/
-/*static int16_t fqmul(int16_t a, int16_t b) {
+static int16_t fqmul(int16_t a, int16_t b) {
     return PQCLEAN_KYBER512_CLEAN_montgomery_reduce((int32_t)a * b);
-}*/
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_ntt
@@ -77,7 +77,7 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
 *
 * Arguments:   - int16_t r[256]: pointer to input/output vector of elements of Zq
 **************************************************/
-/*void PQCLEAN_KYBER512_CLEAN_ntt(int16_t r[256]) {
+void PQCLEAN_KYBER512_CLEAN_ntt(int16_t r[256]) {
     unsigned int len, start, j, k;
     int16_t t, zeta;
 
@@ -92,7 +92,7 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
             }
         }
     }
-}*/
+}
 
 /*************************************************
 * Name:        invntt_tomont
@@ -103,7 +103,7 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
 *
 * Arguments:   - int16_t r[256]: pointer to input/output vector of elements of Zq
 **************************************************/
-/*void PQCLEAN_KYBER512_CLEAN_invntt(int16_t r[256]) {
+void PQCLEAN_KYBER512_CLEAN_invntt(int16_t r[256]) {
     unsigned int start, len, j, k;
     int16_t t, zeta;
     const int16_t f = 1441; // mont^2/128
@@ -124,7 +124,7 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
     for (j = 0; j < 256; j++) {
         r[j] = fqmul(r[j], f);
     }
-}*/
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_basemul
@@ -138,21 +138,9 @@ const int16_t PQCLEAN_KYBER512_CLEAN_zetas[128] = {
 *              - int16_t zeta: integer defining the reduction polynomial
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_basemul(int16_t r[2], const int16_t a[2], const int16_t b[2], int16_t zeta) {
-    int16_t r0, r1, r2, r3, r4;
-
-    //r[0]  = fqmul(a[1], b[1]);
-    //r[0]  = fqmul(r[0], zeta);
-    //r[0] += fqmul(a[0], b[0]);
-    //r[1]  = fqmul(a[0], b[1]);
-    //r[1] += fqmul(a[1], b[0]);
-
-    asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r0) : [src] "r" ((int32_t)a[1] * b[1]) : );
-    asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r1) : [src] "r" ((int32_t)r0*zeta) : );
-    
-    asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r2) : [src] "r" ((int32_t)a[0] * b[0]) : );
-    r[0] = r1 + r2;
-
-    asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r3) : [src] "r" ((int32_t)a[0] * b[1]) : );
-    asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r4) : [src] "r" ((int32_t)a[1] * b[0]) : );
-    r[1] = r3 + r4;
+    r[0]  = fqmul(a[1], b[1]);
+    r[0]  = fqmul(r[0], zeta);
+    r[0] += fqmul(a[0], b[0]);
+    r[1]  = fqmul(a[0], b[1]);
+    r[1] += fqmul(a[1], b[0]);
 }

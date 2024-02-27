@@ -3,8 +3,8 @@
 #include <string.h>
 
 #include "core_v_mini_mcu.h"
-#include "athos_ip_x_heep.h"
-#include "init_athos_ip.h"
+#include "ntt_intt_ip_x_heep.h"
+#include "init_ip.h"
 #include "csr.h"
 #include "rv_plic.h"
 #include "rv_plic_regs.h"
@@ -564,7 +564,7 @@ int main() {
     golden_res[255] = 0xfe27;
 
 
-    init_athos();
+    init_ip();
     CSR_CLEAR_BITS(CSR_REG_MCOUNTINHIBIT, 0x1);
     CSR_WRITE(CSR_REG_MCYCLE, 0);
     /*for (int i = 0; i < 256; i += 4) {

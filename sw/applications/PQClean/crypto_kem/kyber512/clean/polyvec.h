@@ -14,8 +14,8 @@ void PQCLEAN_KYBER512_CLEAN_polyvec_decompress(polyvec *r, const uint8_t a[KYBER
 void PQCLEAN_KYBER512_CLEAN_polyvec_tobytes(uint8_t r[KYBER_POLYVECBYTES], const polyvec *a);
 void PQCLEAN_KYBER512_CLEAN_polyvec_frombytes(polyvec *r, const uint8_t a[KYBER_POLYVECBYTES]);
 
-//void PQCLEAN_KYBER512_CLEAN_polyvec_ntt(polyvec *r);
-//void PQCLEAN_KYBER512_CLEAN_polyvec_invntt_tomont(polyvec *r);
+void PQCLEAN_KYBER512_CLEAN_polyvec_ntt(polyvec *r);
+void PQCLEAN_KYBER512_CLEAN_polyvec_invntt_tomont(polyvec *r);
 
 void PQCLEAN_KYBER512_CLEAN_polyvec_basemul_acc_montgomery(poly *r, const polyvec *a, const polyvec *b);
 

@@ -344,10 +344,10 @@ begin
                 end if;
 
                 if read_en = '1' then
-                    if dout_cnt < 4 then
+                    if dout_cnt < 3 then
                         gnt_valid <= '0';
                     else
-                        if dout_cnt(0) = '1' then
+                        if dout_cnt(0) = '0' then
                             dout_cnt_gnt <= dout_cnt_gnt + 1;
                         else 
                             dout_cnt_gnt <= dout_cnt_gnt;
@@ -371,23 +371,23 @@ begin
                 end if;
 
                 if read_en = '1' then
-                    if dout_cnt < 5 then
+                    if dout_cnt < 4 then
                         gnt_valid <= '0';
                     else
-                        if dout_cnt(0) = '1' then
+                        if dout_cnt(0) = '0' then
                             dout_cnt_gnt <= dout_cnt_gnt + 1;
                         else 
                             dout_cnt_gnt <= dout_cnt_gnt;
                         end if;
 
                         if dout_cnt_gnt < 128 then 
-                            if dout_cnt_gnt(0) = '0' and dout_cnt(0) = '1' then
+                            if dout_cnt_gnt(0) = '0' and dout_cnt(0) = '0' then
                                 gnt_valid <= '1';
                             else 
                                 gnt_valid <= '0';
                             end if;
                         else 
-                            if dout_cnt_gnt(0) = '1' and dout_cnt(0) = '0' then
+                            if dout_cnt_gnt(0) = '1' and dout_cnt(0) = '1' then
                                 gnt_valid <= '1';
                             else 
                                 gnt_valid <= '0';

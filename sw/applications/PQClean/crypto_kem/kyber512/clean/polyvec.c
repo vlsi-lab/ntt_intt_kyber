@@ -19,22 +19,17 @@ void PQCLEAN_KYBER512_CLEAN_polyvec_compress(uint8_t r[KYBER_POLYVECCOMPRESSEDBY
     uint16_t t[4];
     for (i = 0; i < KYBER_K; i++) {
         for (j = 0; j < KYBER_N / 4; j++) {
-            /*for (k = 0; k < 4; k++) {
+            for (k = 0; k < 4; k++) {
                 t[k]  = a->vec[i].coeffs[4 * j + k];
                 t[k] += ((int16_t)t[k] >> 15) & KYBER_Q;
-                //      t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q/2)/ KYBER_Q) & 0x3ff;
+                /*      t[k]  = ((((uint32_t)t[k] << 10) + KYBER_Q/2)/ KYBER_Q) & 0x3ff; */
                 d0 = t[k];
                 d0 <<= 10;
                 d0 += 1665;
                 d0 *= 1290167;
                 d0 >>= 32;
                 t[k] = d0 & 0x3ff;
-            }*/
-            asm volatile (".insn r 0x0b, 0x6, 36, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[0])  : [src] "r" (a->vec[i].coeffs[4 * j ]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 36, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[1])  : [src] "r" (a->vec[i].coeffs[4 * j + 1]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 36, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[2])  : [src] "r" (a->vec[i].coeffs[4 * j + 2]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 36, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[3])  : [src] "r" (a->vec[i].coeffs[4 * j + 3]), [x] "r" (0) :  );
-
+            }
 
             r[0] = (uint8_t)(t[0] >> 0);
             r[1] = (uint8_t)((t[0] >> 8) | (t[1] << 2));
@@ -68,13 +63,9 @@ void PQCLEAN_KYBER512_CLEAN_polyvec_decompress(polyvec *r, const uint8_t a[KYBER
             t[3] = (a[3] >> 6) | ((uint16_t)a[4] << 2);
             a += 5;
 
-            /*for (k = 0; k < 4; k++) {
+            for (k = 0; k < 4; k++) {
                 r->vec[i].coeffs[4 * j + k] = ((uint32_t)(t[k] & 0x3FF) * KYBER_Q + 512) >> 10;
-            }*/
-            asm volatile (".insn r 0x0b, 0x6, 38, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->vec[i].coeffs[4 * j])  : [src] "r" (t[0]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 38, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->vec[i].coeffs[4 * j + 1])  : [src] "r" (t[1]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 38, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->vec[i].coeffs[4 * j + 2])  : [src] "r" (t[2]), [x] "r" (0) :  );
-            asm volatile (".insn r 0x0b, 0x6, 38, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->vec[i].coeffs[4 * j + 3])  : [src] "r" (t[3]), [x] "r" (0) :  );
+            }
         }
     }
 }
@@ -119,7 +110,12 @@ void PQCLEAN_KYBER512_CLEAN_polyvec_frombytes(polyvec *r, const uint8_t a[KYBER_
 *
 * Arguments:   - polyvec *r: pointer to in/output vector of polynomials
 **************************************************/
-
+void PQCLEAN_KYBER512_CLEAN_polyvec_ntt(polyvec *r) {
+    unsigned int i;
+    for (i = 0; i < KYBER_K; i++) {
+        PQCLEAN_KYBER512_CLEAN_poly_ntt(&r->vec[i]);
+    }
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_polyvec_invntt_tomont
@@ -129,6 +125,12 @@ void PQCLEAN_KYBER512_CLEAN_polyvec_frombytes(polyvec *r, const uint8_t a[KYBER_
 *
 * Arguments:   - polyvec *r: pointer to in/output vector of polynomials
 **************************************************/
+void PQCLEAN_KYBER512_CLEAN_polyvec_invntt_tomont(polyvec *r) {
+    unsigned int i;
+    for (i = 0; i < KYBER_K; i++) {
+        PQCLEAN_KYBER512_CLEAN_poly_invntt_tomont(&r->vec[i]);
+    }
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_polyvec_basemul_acc_montgomery

@@ -38,12 +38,15 @@ module ntt_intt_ip_dp
     logic               ntt_intt_ready;
     logic               din_en, din_en_delayed, din_en_delayed2;
     logic               ntt_intt_dout_ready;
+    logic               slave_gnt;
 
 
 
     assign din_ntt_intt_pwn_ip = reg_file_to_ip_data_i.din[0].q;
     //FF-for din_enable: it need to be delayed of one clock cycle for the NTT-BRAM
     assign din_en = reg_file_to_ip_data_i.din[0].qe;//| flag_input_i;
+    
+    assign slave_resp_gnt_ready_o = slave_gnt;
 
 
 
@@ -121,7 +124,7 @@ module ntt_intt_ip_dp
             ip_to_reg_file_data_o.dout[0].d = ntt_intt_dout;
 
             ready_o = ntt_intt_ready;
-            slave_resp_gnt_ready_o <= ntt_intt_dout_ready;
+            slave_gnt <= ntt_intt_dout_ready;
 
         end
 
@@ -178,10 +181,10 @@ module ntt_intt_ip_dp
             ip_to_reg_file_data_o.dout[0].d = ntt_intt_dout;
             
             ready_o = ntt_intt_ready;
-            slave_resp_gnt_ready_o <= ntt_intt_dout_ready;
+            slave_gnt <= ntt_intt_dout_ready;
         end
         default: begin
-            slave_resp_gnt_ready_o = '0;
+            slave_gnt <= '0;
         end
     endcase
     end

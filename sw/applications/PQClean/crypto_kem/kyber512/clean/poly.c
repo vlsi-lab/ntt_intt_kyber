@@ -5,7 +5,6 @@
 #include "reduce.h"
 #include "symmetric.h"
 #include <stdint.h>
-#include <stdio.h>
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_poly_compress
@@ -17,31 +16,23 @@
 *              - const poly *a: pointer to input polynomial
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], const poly *a) {
-    size_t i, j;
-    int16_t u;
-    uint8_t t[8];
+    unsigned int i, j;
+    int32_t u;
     uint32_t d0;
+    uint8_t t[8];
 
     for (i = 0; i < KYBER_N / 8; i++) {
-        /*for (j = 0; j < 8; j++) {
+        for (j = 0; j < 8; j++) {
             // map to positive standard representatives
             u  = a->coeffs[8 * i + j];
             u += (u >> 15) & KYBER_Q;
+            /*    t[j] = ((((uint16_t)u << 4) + KYBER_Q/2)/KYBER_Q) & 15; */
             d0 = u << 4;
             d0 += 1665;
             d0 *= 80635;
             d0 >>= 28;
             t[j] = d0 & 0xf;
-        }*/
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[0])  : [src] "r" (a->coeffs[8 * i]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[1])  : [src] "r" (a->coeffs[8 * i + 1]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[2])  : [src] "r" (a->coeffs[8 * i + 2]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[3])  : [src] "r" (a->coeffs[8 * i + 3]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[4])  : [src] "r" (a->coeffs[8 * i + 4]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[5])  : [src] "r" (a->coeffs[8 * i + 5]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[6])  : [src] "r" (a->coeffs[8 * i + 6]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x6, 17, %[dst], %[src], %[x]\r\n" : [dst] "=r" (t[7])  : [src] "r" (a->coeffs[8 * i + 7]), [x] "r" (0) :  );
-
+        }
 
         r[0] = t[0] | (t[1] << 4);
         r[1] = t[2] | (t[3] << 4);
@@ -63,17 +54,10 @@ void PQCLEAN_KYBER512_CLEAN_poly_compress(uint8_t r[KYBER_POLYCOMPRESSEDBYTES], 
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_poly_decompress(poly *r, const uint8_t a[KYBER_POLYCOMPRESSEDBYTES]) {
     size_t i;
-    uint16_t t1,t2,t3;
 
     for (i = 0; i < KYBER_N / 2; i++) {
-        /*r->coeffs[2 * i + 0] = (((uint16_t)(a[0] & 15) * KYBER_Q) + 8) >> 4;
-        t1 = (uint16_t)(a[0] >> 4);
-        t2 = t1  * KYBER_Q;
-        t3 = t2 + 8;
-        r->coeffs[2 * i + 1] = t3 >> 4;;*/
-        asm volatile (".insn r 0x0b, 0x006, 18, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->coeffs[2 * i + 0])  : [src] "r" (a[0]), [x] "r" (0) :  );
-        asm volatile (".insn r 0x0b, 0x006, 19, %[dst], %[src], %[x]\r\n" : [dst] "=r" (r->coeffs[2 * i + 1])  : [src] "r" (a[0]), [x] "r" (0) :  );
-
+        r->coeffs[2 * i + 0] = (((uint16_t)(a[0] & 15) * KYBER_Q) + 8) >> 4;
+        r->coeffs[2 * i + 1] = (((uint16_t)(a[0] >> 4) * KYBER_Q) + 8) >> 4;
         a += 1;
     }
 }
@@ -93,17 +77,13 @@ void PQCLEAN_KYBER512_CLEAN_poly_tobytes(uint8_t r[KYBER_POLYBYTES], const poly 
 
     for (i = 0; i < KYBER_N / 2; i++) {
         // map to positive standard representatives
-        /*t0  = a->coeffs[2 * i];
+        t0  = a->coeffs[2 * i];
         t0 += ((int16_t)t0 >> 15) & KYBER_Q;
         t1 = a->coeffs[2 * i + 1];
         t1 += ((int16_t)t1 >> 15) & KYBER_Q;
         r[3 * i + 0] = (uint8_t)(t0 >> 0);
         r[3 * i + 1] = (uint8_t)((t0 >> 8) | (t1 << 4));
-        r[3 * i + 2] = (uint8_t)(t1 >> 4);*/
-        asm volatile (".insn r 0x0b, 0x006, 22, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r[3 * i + 0])  : [src] "r" (a->coeffs[2 * i]), [src2] "r" (a->coeffs[2 * i + 1]) :  );
-        asm volatile (".insn r 0x0b, 0x006, 23, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r[3 * i + 1])  : [src] "r" (a->coeffs[2 * i]), [src2] "r" (a->coeffs[2 * i + 1]) :  );
-        asm volatile (".insn r 0x0b, 0x006, 24, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r[3 * i + 2])  : [src] "r" (a->coeffs[2 * i]), [src2] "r" (a->coeffs[2 * i + 1]) :  );
-
+        r[3 * i + 2] = (uint8_t)(t1 >> 4);
     }
 }
 
@@ -120,10 +100,8 @@ void PQCLEAN_KYBER512_CLEAN_poly_tobytes(uint8_t r[KYBER_POLYBYTES], const poly 
 void PQCLEAN_KYBER512_CLEAN_poly_frombytes(poly *r, const uint8_t a[KYBER_POLYBYTES]) {
     size_t i;
     for (i = 0; i < KYBER_N / 2; i++) {
-        //r->coeffs[2 * i]   = ((a[3 * i + 0] >> 0) | ((uint16_t)a[3 * i + 1] << 8)) & 0xFFF;
-        //r->coeffs[2 * i + 1] = ((a[3 * i + 1] >> 4) | ((uint16_t)a[3 * i + 2] << 4)) & 0xFFF;
-        asm volatile (".insn r 0x0b, 0x006, 25, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[2 * i] )  : [src] "r" (a[3 * i + 0]), [src2] "r" (a[3 * i + 1]) :  );
-        asm volatile (".insn r 0x0b, 0x006, 26, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[2 * i + 1] )  : [src] "r" (a[3 * i + 1]), [src2] "r" (a[3 * i + 2]) :  );
+        r->coeffs[2 * i]   = ((a[3 * i + 0] >> 0) | ((uint16_t)a[3 * i + 1] << 8)) & 0xFFF;
+        r->coeffs[2 * i + 1] = ((a[3 * i + 1] >> 4) | ((uint16_t)a[3 * i + 2] << 4)) & 0xFFF;
     }
 }
 
@@ -141,16 +119,8 @@ void PQCLEAN_KYBER512_CLEAN_poly_frommsg(poly *r, const uint8_t msg[KYBER_INDCPA
 
     for (i = 0; i < KYBER_N / 8; i++) {
         for (j = 0; j < 8; j++) {
-            //mask = -(int16_t)((msg[i] >> j) & 1);
-            //r->coeffs[8 * i + j] = mask & ((KYBER_Q + 1) / 2);
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+0])  : [src] "r" (msg[i]), [src2] "r" (0) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+1])  : [src] "r" (msg[i]), [src2] "r" (1) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+2])  : [src] "r" (msg[i]), [src2] "r" (2) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+3])  : [src] "r" (msg[i]), [src2] "r" (3) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+4])  : [src] "r" (msg[i]), [src2] "r" (4) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+5])  : [src] "r" (msg[i]), [src2] "r" (5) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+6])  : [src] "r" (msg[i]), [src2] "r" (6) :   );
-            asm volatile (".insn r 0x0b, 0x006, 27, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (r->coeffs[8*i+7])  : [src] "r" (msg[i]), [src2] "r" (7) :   );
+            mask = -(int16_t)((msg[i] >> j) & 1);
+            r->coeffs[8 * i + j] = mask & ((KYBER_Q + 1) / 2);
         }
     }
 }
@@ -164,26 +134,22 @@ void PQCLEAN_KYBER512_CLEAN_poly_frommsg(poly *r, const uint8_t msg[KYBER_INDCPA
 *              - const poly *a: pointer to input polynomial
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const poly *a) {
-    size_t i, j;
-    uint16_t t;
+    unsigned int i, j;
+    uint32_t t;
 
     for (i = 0; i < KYBER_N / 8; i++) {
         msg[i] = 0;
-        /*for (j = 0; j < 8; j++) {
+        for (j = 0; j < 8; j++) {
             t  = a->coeffs[8 * i + j];
-            t += ((int16_t)t >> 15) & KYBER_Q;
-            t  = (((t << 1) + 1665) / KYBER_Q) & 1;
+            // t += ((int16_t)t >> 15) & KYBER_Q;
+            // t  = (((t << 1) + KYBER_Q/2)/KYBER_Q) & 1;
+            t <<= 1;
+            t += 1665;
+            t *= 80635;
+            t >>= 28;
+            t &= 1;
             msg[i] |= t << j;
-        }*/
-        asm volatile (".insn r 0x0b, 0x006, 28, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 0]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 29, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 1]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 30, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 2]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 31, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 3]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 32, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 4]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 33, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 5]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 34, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 6]), [src2] "r" (msg[i]) :   );
-        asm volatile (".insn r 0x0b, 0x006, 35, %[dst], %[src], %[src2]\r\n" : [dst] "=r" (msg[i])  : [src] "r" (a->coeffs[8 * i + 7]), [src2] "r" (msg[i]) :   );
-
+        }
     }
 }
 
@@ -201,8 +167,7 @@ void PQCLEAN_KYBER512_CLEAN_poly_tomsg(uint8_t msg[KYBER_INDCPA_MSGBYTES], const
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_poly_getnoise_eta1(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t nonce) {
     uint8_t buf[KYBER_ETA1 * KYBER_N / 4];
-    //prf(buf, sizeof(buf), seed, nonce);
-    shake256(buf, sizeof(buf), seed, nonce);
+    prf(buf, sizeof(buf), seed, nonce);
     PQCLEAN_KYBER512_CLEAN_poly_cbd_eta1(r, buf);
 }
 
@@ -220,8 +185,7 @@ void PQCLEAN_KYBER512_CLEAN_poly_getnoise_eta1(poly *r, const uint8_t seed[KYBER
 **************************************************/
 void PQCLEAN_KYBER512_CLEAN_poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER_SYMBYTES], uint8_t nonce) {
     uint8_t buf[KYBER_ETA2 * KYBER_N / 4];
-    //prf(buf, sizeof(buf), seed, nonce);
-    shake256(buf, sizeof(buf), seed, nonce);
+    prf(buf, sizeof(buf), seed, nonce);
     PQCLEAN_KYBER512_CLEAN_poly_cbd_eta2(r, buf);
 }
 
@@ -234,6 +198,10 @@ void PQCLEAN_KYBER512_CLEAN_poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER
 *
 * Arguments:   - uint16_t *r: pointer to in/output polynomial
 **************************************************/
+void PQCLEAN_KYBER512_CLEAN_poly_ntt(poly *r) {
+    PQCLEAN_KYBER512_CLEAN_ntt(r->coeffs);
+    PQCLEAN_KYBER512_CLEAN_poly_reduce(r);
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_poly_invntt_tomont
@@ -244,6 +212,9 @@ void PQCLEAN_KYBER512_CLEAN_poly_getnoise_eta2(poly *r, const uint8_t seed[KYBER
 *
 * Arguments:   - uint16_t *a: pointer to in/output polynomial
 **************************************************/
+void PQCLEAN_KYBER512_CLEAN_poly_invntt_tomont(poly *r) {
+    PQCLEAN_KYBER512_CLEAN_invntt(r->coeffs);
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_poly_basemul_montgomery
@@ -274,8 +245,7 @@ void PQCLEAN_KYBER512_CLEAN_poly_tomont(poly *r) {
     size_t i;
     const int16_t f = (1ULL << 32) % KYBER_Q;
     for (i = 0; i < KYBER_N; i++) {
-        //r->coeffs[i] = PQCLEAN_KYBER512_CLEAN_montgomery_reduce((int32_t)r->coeffs[i] * f);
-        asm volatile (".insn r 0x0b, 0x003, 2, %[dst], %[src], x0\r\n" : [dst] "=r" (r->coeffs[i]) : [src] "r" ((int32_t)r->coeffs[i] * f) : );
+        r->coeffs[i] = PQCLEAN_KYBER512_CLEAN_montgomery_reduce((int32_t)r->coeffs[i] * f);
     }
 }
 
@@ -290,11 +260,9 @@ void PQCLEAN_KYBER512_CLEAN_poly_tomont(poly *r) {
 void PQCLEAN_KYBER512_CLEAN_poly_reduce(poly *r) {
     size_t i;
     for (i = 0; i < KYBER_N; i++) {
-        //r->coeffs[i] = PQCLEAN_KYBER512_CLEAN_barrett_reduce(r->coeffs[i]);
-        asm volatile (".insn r 0x0b, 0x004, 0, %[dst], %[src], x0\r\n" : [dst] "=r" (r->coeffs[i]) : [src] "r" (r->coeffs[i]) : );
-
+        r->coeffs[i] = PQCLEAN_KYBER512_CLEAN_barrett_reduce(r->coeffs[i]);
     }
-}  
+}
 
 /*************************************************
 * Name:        PQCLEAN_KYBER512_CLEAN_poly_add
