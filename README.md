@@ -8,7 +8,7 @@ NTT-INTT accelerator has been integrated and tested.
 ## Getting started
 Get the repository:
 ```
-git clone 
+git clone https://github.com/vlsi-lab/ntt_intt_kyber.git
 ```
 
 
