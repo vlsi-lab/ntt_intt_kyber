@@ -82,6 +82,10 @@ filesets:
   ip-asic:
     depend:
     - technology::prim_mytech
+    - x-heep::packages
+    - pulp-platform.org::common_cells
+    - openhwgroup.org:systems:core-v-mini-mcu
+    - x-heep:ip:pad_control
 
   rtl-fpga:
     files:

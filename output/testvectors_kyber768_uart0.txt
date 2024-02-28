@@ -1,0 +1,6 @@
+Hi testvectors KEM!
+Number of clock cycles keygen: 1592129
+Number of clock cycles enc: 1702400
+Number of clock cycles dec: 1872780
+28c4205830e7fbb8
+28c4205830e7fbb8

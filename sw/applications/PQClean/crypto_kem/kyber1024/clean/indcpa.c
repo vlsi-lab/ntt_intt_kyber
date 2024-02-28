@@ -219,16 +219,8 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_keypair_derand(uint8_t pk[KYBER_INDCPA_PUBLI
         PQCLEAN_KYBER1024_CLEAN_poly_getnoise_eta1(&e.vec[i], noiseseed, nonce++);
     }
 
-    //PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&skpv);
-    ntt_driver(skpv.vec[0].coeffs, skpv.vec[0].coeffs);
-    ntt_driver(skpv.vec[1].coeffs, skpv.vec[1].coeffs);
-    ntt_driver(skpv.vec[2].coeffs, skpv.vec[2].coeffs);
-    ntt_driver(skpv.vec[3].coeffs, skpv.vec[3].coeffs);
-    //PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&e);
-    ntt_driver(e.vec[0].coeffs, e.vec[0].coeffs);
-    ntt_driver(e.vec[1].coeffs, e.vec[1].coeffs);
-    ntt_driver(e.vec[2].coeffs, e.vec[2].coeffs);
-    ntt_driver(e.vec[3].coeffs, e.vec[3].coeffs);
+    PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&skpv);
+    PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&e);
 
     // matrix-vector multiplication
     for (i = 0; i < KYBER_K; i++) {
@@ -281,11 +273,7 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
     }
     PQCLEAN_KYBER1024_CLEAN_poly_getnoise_eta2(&epp, coins, nonce++);
 
-    //PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&sp);
-    ntt_driver(sp.vec[0].coeffs, sp.vec[0].coeffs);
-    ntt_driver(sp.vec[1].coeffs, sp.vec[1].coeffs);
-    ntt_driver(sp.vec[2].coeffs, sp.vec[2].coeffs);
-    ntt_driver(sp.vec[3].coeffs, sp.vec[3].coeffs);
+    PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&sp);
 
     // matrix-vector multiplication
     for (i = 0; i < KYBER_K; i++) {
@@ -294,14 +282,8 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
 
     PQCLEAN_KYBER1024_CLEAN_polyvec_basemul_acc_montgomery(&v, &pkpv, &sp);
 
-    //PQCLEAN_KYBER1024_CLEAN_polyvec_invntt_tomont(&b);
-    intt_driver(b.vec[0].coeffs, b.vec[0].coeffs);
-    intt_driver(b.vec[1].coeffs, b.vec[1].coeffs);
-    intt_driver(b.vec[2].coeffs, b.vec[2].coeffs);
-    intt_driver(b.vec[3].coeffs, b.vec[3].coeffs);
-
-    //PQCLEAN_KYBER1024_CLEAN_poly_invntt_tomont(&v);
-    intt_driver(v.coeffs, v.coeffs);
+    PQCLEAN_KYBER1024_CLEAN_polyvec_invntt_tomont(&b);
+    PQCLEAN_KYBER1024_CLEAN_poly_invntt_tomont(&v);
 
     PQCLEAN_KYBER1024_CLEAN_polyvec_add(&b, &b, &ep);
     PQCLEAN_KYBER1024_CLEAN_poly_add(&v, &v, &epp);
@@ -334,15 +316,9 @@ void PQCLEAN_KYBER1024_CLEAN_indcpa_dec(uint8_t m[KYBER_INDCPA_MSGBYTES],
     unpack_ciphertext(&b, &v, c);
     unpack_sk(&skpv, sk);
 
-    //PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&b);
-    ntt_driver(b.vec[0].coeffs, b.vec[0].coeffs);
-    ntt_driver(b.vec[1].coeffs, b.vec[1].coeffs);
-    ntt_driver(b.vec[2].coeffs, b.vec[2].coeffs);
-    ntt_driver(b.vec[3].coeffs, b.vec[3].coeffs);
-   
+    PQCLEAN_KYBER1024_CLEAN_polyvec_ntt(&b);
     PQCLEAN_KYBER1024_CLEAN_polyvec_basemul_acc_montgomery(&mp, &skpv, &b);
-    //PQCLEAN_KYBER1024_CLEAN_poly_invntt_tomont(&mp);
-    intt_driver(mp.coeffs, mp.coeffs);
+    PQCLEAN_KYBER1024_CLEAN_poly_invntt_tomont(&mp);
 
     PQCLEAN_KYBER1024_CLEAN_poly_sub(&mp, &v, &mp);
     PQCLEAN_KYBER1024_CLEAN_poly_reduce(&mp);
