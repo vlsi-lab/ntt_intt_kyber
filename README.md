@@ -1,5 +1,7 @@
-# Introduction
+# **KALIPSO**
+# **K**yber-**A**ccelerated **L**ow-latency **I**mplementation for **P**olynomial-multiplication for RI**S**C-V **O**ptimization 
 
+## Introduction
 In the **ntt_intt_kyber** repository you can find an example of how a post-quantum cryptographic (PQC) hardware accelerator works. 
 NTT-INTT accelerator has been integrated and tested.
 
