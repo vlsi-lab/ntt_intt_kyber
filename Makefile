@@ -203,7 +203,7 @@ verilator-sim:
 
 run-$(IP_TYPE)-questasim: 
 	cd ./build/polito_vlsi_lab_ntt_intt_mcu_0/sim-modelsim; \
-	make run-gui PLUSARGS="c firmware=../../../sw/applications/ip_test/$(IP_TYPE)/main.hex"; \
+	make run PLUSARGS="c firmware=../../../sw/applications/ip_test/$(IP_TYPE)/main.hex"; \
 	cat uart0.log; \
 	cd ../../..;
 
