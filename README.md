@@ -14,7 +14,26 @@ Get the repository:
 ```
 git clone https://github.com/vlsi-lab/ntt_intt_kyber.git
 ```
+After cloning the repository, you can build and simulate using:
 
+```sh
+make mcu-gen
+make questasim-sim
+```
+
+## Running Applications
+
+You can run NTT and INTT applications:
+
+```sh
+make app-NTT IP_TYPE=NTT
+make run-NTT-questasim IP_TYPE=NTT
+```
+```sh
+make app-INTT IP_TYPE=INTT
+make run-INTT-questasim IP_TYPE=INTT
+
+```
 
 <!-- LICENSE -->
 ## License
