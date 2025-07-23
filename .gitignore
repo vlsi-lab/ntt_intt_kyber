@@ -5,3 +5,6 @@
 build
 hw/asic
 .vscode/
+
+*.jou
+*.log 
