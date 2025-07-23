@@ -305,7 +305,7 @@ int main() {
     r.coeffs[12] = -1;
     r.coeffs[13] = -1;
     r.coeffs[14] = -1;
-     21e:	fff38593          	addi	a1,t2,-1 # 2ffff <randombytes.c.2b898991+0x24ed2>
+     21e:	fff38593          	addi	a1,t2,-1 # 2ffff <randombytes.c.7b0b7543+0x24ed2>
      222:	42b12623          	sw	a1,1068(sp)
     r.coeffs[15] = 2;
     r.coeffs[16] = -2;
@@ -328,13 +328,13 @@ int main() {
     r.coeffs[24] = 3;
      236:	458d                	li	a1,3
     r.coeffs[4] = -1;
-     238:	fff68713          	addi	a4,a3,-1 # ffff <randombytes.c.2b898991+0x4ed2>
+     238:	fff68713          	addi	a4,a3,-1 # ffff <randombytes.c.7b0b7543+0x4ed2>
     r.coeffs[10] = 1;
      23c:	00168613          	addi	a2,a3,1
     r.coeffs[12] = -1;
      240:	58fd                	li	a7,-1
     r.coeffs[32] = -1;
-     242:	fff50313          	addi	t1,a0,-1 # 1ffff <randombytes.c.2b898991+0x14ed2>
+     242:	fff50313          	addi	t1,a0,-1 # 1ffff <randombytes.c.7b0b7543+0x14ed2>
     r.coeffs[44] = 1;
      246:	00180e13          	addi	t3,a6,1 # fffe0001 <_sp+0xffeff941>
     r.coeffs[0] = 1;
@@ -4389,7 +4389,7 @@ void handler_irq_fast_gpio_7(void)
 
 00001fc8 <__sinit>:
     1fc8:	4d1c                	lw	a5,24(a0)
-    1fca:	e3b5                	bnez	a5,202e <core_v_mini_mcu.c.26e18fdb+0x3e>
+    1fca:	e3b5                	bnez	a5,202e <core_v_mini_mcu.c.6caf6819+0x3e>
     1fcc:	1141                	addi	sp,sp,-16
     1fce:	6789                	lui	a5,0x2
     1fd0:	c422                	sw	s0,8(sp)
@@ -4402,7 +4402,7 @@ void handler_irq_fast_gpio_7(void)
     1fe6:	04052623          	sw	zero,76(a0)
     1fea:	04052823          	sw	zero,80(a0)
     1fee:	842a                	mv	s0,a0
-    1ff0:	00f51463          	bne	a0,a5,1ff8 <core_v_mini_mcu.c.26e18fdb+0x8>
+    1ff0:	00f51463          	bne	a0,a5,1ff8 <core_v_mini_mcu.c.6caf6819+0x8>
     1ff4:	4785                	li	a5,1
     1ff6:	cd1c                	sw	a5,24(a0)
     1ff8:	8522                	mv	a0,s0
@@ -4453,11 +4453,11 @@ void handler_irq_fast_gpio_7(void)
     2054:	17fd                	addi	a5,a5,-1
     2056:	0007d663          	bgez	a5,2062 <__sfp+0x32>
     205a:	409c                	lw	a5,0(s1)
-    205c:	cfb9                	beqz	a5,20ba <handler.c.43513cb1+0x1e>
+    205c:	cfb9                	beqz	a5,20ba <handler.c.c75fde50+0x1e>
     205e:	4084                	lw	s1,0(s1)
     2060:	bfc5                	j	2050 <__sfp+0x20>
     2062:	00c41703          	lh	a4,12(s0)
-    2066:	e739                	bnez	a4,20b4 <handler.c.43513cb1+0x18>
+    2066:	e739                	bnez	a4,20b4 <handler.c.c75fde50+0x18>
     2068:	77c1                	lui	a5,0xffff0
     206a:	0785                	addi	a5,a5,1
     206c:	06042223          	sw	zero,100(s0)
@@ -4493,7 +4493,7 @@ void handler_irq_fast_gpio_7(void)
     20c4:	fd49                	bnez	a0,205e <__sfp+0x2e>
     20c6:	47b1                	li	a5,12
     20c8:	00f92023          	sw	a5,0(s2)
-    20cc:	bfe9                	j	20a6 <handler.c.43513cb1+0xa>
+    20cc:	bfe9                	j	20a6 <handler.c.c75fde50+0xa>
 
 000020ce <__sfp_lock_acquire>:
     20ce:	8082                	ret
@@ -4711,7 +4711,7 @@ void handler_irq_fast_gpio_7(void)
     22b6:	b761                	j	223e <__smakebuf_r+0x20>
 
 000022b8 <_free_r>:
-    22b8:	c1c5                	beqz	a1,2358 <mmio.c.d1dba549+0x64>
+    22b8:	c1c5                	beqz	a1,2358 <mmio.c.5a37ee6b+0x64>
     22ba:	ffc5a783          	lw	a5,-4(a1)
     22be:	1101                	addi	sp,sp,-32
     22c0:	cc22                	sw	s0,24(sp)
@@ -4731,10 +4731,10 @@ void handler_irq_fast_gpio_7(void)
     22e8:	40f2                	lw	ra,28(sp)
     22ea:	6105                	addi	sp,sp,32
     22ec:	ae15                	j	2620 <__malloc_unlock>
-    22ee:	00f47d63          	bgeu	s0,a5,2308 <mmio.c.d1dba549+0x14>
+    22ee:	00f47d63          	bgeu	s0,a5,2308 <mmio.c.5a37ee6b+0x14>
     22f2:	4010                	lw	a2,0(s0)
     22f4:	00c406b3          	add	a3,s0,a2
-    22f8:	00d79663          	bne	a5,a3,2304 <mmio.c.d1dba549+0x10>
+    22f8:	00d79663          	bne	a5,a3,2304 <mmio.c.5a37ee6b+0x10>
     22fc:	4394                	lw	a3,0(a5)
     22fe:	43dc                	lw	a5,4(a5)
     2300:	96b2                	add	a3,a3,a2
@@ -4743,11 +4743,11 @@ void handler_irq_fast_gpio_7(void)
     2306:	bff1                	j	22e2 <_free_r+0x2a>
     2308:	873e                	mv	a4,a5
     230a:	43dc                	lw	a5,4(a5)
-    230c:	c399                	beqz	a5,2312 <mmio.c.d1dba549+0x1e>
-    230e:	fef47de3          	bgeu	s0,a5,2308 <mmio.c.d1dba549+0x14>
+    230c:	c399                	beqz	a5,2312 <mmio.c.5a37ee6b+0x1e>
+    230e:	fef47de3          	bgeu	s0,a5,2308 <mmio.c.5a37ee6b+0x14>
     2312:	4314                	lw	a3,0(a4)
     2314:	00d70633          	add	a2,a4,a3
-    2318:	00861f63          	bne	a2,s0,2336 <mmio.c.d1dba549+0x42>
+    2318:	00861f63          	bne	a2,s0,2336 <mmio.c.5a37ee6b+0x42>
     231c:	4010                	lw	a2,0(s0)
     231e:	96b2                	add	a3,a3,a2
     2320:	c314                	sw	a3,0(a4)
@@ -4759,13 +4759,13 @@ void handler_irq_fast_gpio_7(void)
     2330:	c314                	sw	a3,0(a4)
     2332:	c35c                	sw	a5,4(a4)
     2334:	bf4d                	j	22e6 <_free_r+0x2e>
-    2336:	00c47563          	bgeu	s0,a2,2340 <mmio.c.d1dba549+0x4c>
+    2336:	00c47563          	bgeu	s0,a2,2340 <mmio.c.5a37ee6b+0x4c>
     233a:	47b1                	li	a5,12
     233c:	c11c                	sw	a5,0(a0)
     233e:	b765                	j	22e6 <_free_r+0x2e>
     2340:	4010                	lw	a2,0(s0)
     2342:	00c406b3          	add	a3,s0,a2
-    2346:	00d79663          	bne	a5,a3,2352 <mmio.c.d1dba549+0x5e>
+    2346:	00d79663          	bne	a5,a3,2352 <mmio.c.5a37ee6b+0x5e>
     234a:	4394                	lw	a3,0(a5)
     234c:	43dc                	lw	a5,4(a5)
     234e:	96b2                	add	a3,a3,a2
@@ -5304,12 +5304,12 @@ void handler_irq_fast_gpio_7(void)
     2802:	854e                	mv	a0,s3
     2804:	3721                	jal	270c <__sfputs_r>
     2806:	57fd                	li	a5,-1
-    2808:	1ef50363          	beq	a0,a5,29ee <bitfield.c.7da5f781+0x41>
+    2808:	1ef50363          	beq	a0,a5,29ee <bitfield.c.e9c5d476+0x41>
     280c:	5792                	lw	a5,36(sp)
     280e:	97ee                	add	a5,a5,s11
     2810:	d23e                	sw	a5,36(sp)
     2812:	00044783          	lbu	a5,0(s0)
-    2816:	1c078c63          	beqz	a5,29ee <bitfield.c.7da5f781+0x41>
+    2816:	1c078c63          	beqz	a5,29ee <bitfield.c.e9c5d476+0x41>
     281a:	57fd                	li	a5,-1
     281c:	00140913          	addi	s2,s0,1
     2820:	c802                	sw	zero,16(sp)
@@ -5429,7 +5429,7 @@ void handler_irq_fast_gpio_7(void)
     2958:	00044703          	lbu	a4,0(s0)
     295c:	00140593          	addi	a1,s0,1
     2960:	fd070713          	addi	a4,a4,-48
-    2964:	04e67d63          	bgeu	a2,a4,29be <bitfield.c.7da5f781+0x11>
+    2964:	04e67d63          	bgeu	a2,a4,29be <bitfield.c.e9c5d476+0x11>
     2968:	f2e9                	bnez	a3,292a <_vfiprintf_r+0x1ba>
     296a:	00044583          	lbu	a1,0(s0)
     296e:	460d                	li	a2,3
@@ -5450,12 +5450,12 @@ void handler_irq_fast_gpio_7(void)
     2998:	00140913          	addi	s2,s0,1
     299c:	02b10423          	sb	a1,40(sp)
     29a0:	26a9                	jal	2cea <memchr>
-    29a2:	cd31                	beqz	a0,29fe <bitfield.c.7da5f781+0x51>
-    29a4:	020a9763          	bnez	s5,29d2 <bitfield.c.7da5f781+0x25>
+    29a2:	cd31                	beqz	a0,29fe <bitfield.c.e9c5d476+0x51>
+    29a4:	020a9763          	bnez	s5,29d2 <bitfield.c.e9c5d476+0x25>
     29a8:	4742                	lw	a4,16(sp)
     29aa:	47b2                	lw	a5,12(sp)
     29ac:	10077713          	andi	a4,a4,256
-    29b0:	cf09                	beqz	a4,29ca <bitfield.c.7da5f781+0x1d>
+    29b0:	cf09                	beqz	a4,29ca <bitfield.c.e9c5d476+0x1d>
     29b2:	0791                	addi	a5,a5,4
     29b4:	c63e                	sw	a5,12(sp)
     29b6:	5792                	lw	a5,36(sp)
@@ -5470,7 +5470,7 @@ void handler_irq_fast_gpio_7(void)
     29ca:	079d                	addi	a5,a5,7
     29cc:	9be1                	andi	a5,a5,-8
     29ce:	07a1                	addi	a5,a5,8
-    29d0:	b7d5                	j	29b4 <bitfield.c.7da5f781+0x7>
+    29d0:	b7d5                	j	29b4 <bitfield.c.e9c5d476+0x7>
     29d2:	0078                	addi	a4,sp,12
     29d4:	70cc0693          	addi	a3,s8,1804 # 270c <__sfputs_r>
     29d8:	8626                	mv	a2,s1
@@ -5480,7 +5480,7 @@ void handler_irq_fast_gpio_7(void)
     29e2:	000000e7          	jalr	zero # 0 <__vector_start>
     29e6:	57fd                	li	a5,-1
     29e8:	8a2a                	mv	s4,a0
-    29ea:	fcf516e3          	bne	a0,a5,29b6 <bitfield.c.7da5f781+0x9>
+    29ea:	fcf516e3          	bne	a0,a5,29b6 <bitfield.c.e9c5d476+0x9>
     29ee:	00c4d783          	lhu	a5,12(s1)
     29f2:	0407f793          	andi	a5,a5,64
     29f6:	ec0793e3          	bnez	a5,28bc <_vfiprintf_r+0x14c>
@@ -5492,7 +5492,7 @@ void handler_irq_fast_gpio_7(void)
     2a06:	080c                	addi	a1,sp,16
     2a08:	854e                	mv	a0,s3
     2a0a:	2175                	jal	2eb6 <_printf_i>
-    2a0c:	bfe9                	j	29e6 <bitfield.c.7da5f781+0x39>
+    2a0c:	bfe9                	j	29e6 <bitfield.c.e9c5d476+0x39>
 
 00002a0e <vfiprintf>:
     2a0e:	000807b7          	lui	a5,0x80
@@ -5540,7 +5540,7 @@ void handler_irq_fast_gpio_7(void)
     2a6c:	4501                	li	a0,0
     2a6e:	4b01                	li	s6,0
     2a70:	4a81                	li	s5,0
-    2a72:	220a8e63          	beqz	s5,2cae <memory.c.a1effd0a+0xb9>
+    2a72:	220a8e63          	beqz	s5,2cae <memory.c.a1c3d62e+0xb9>
     2a76:	e919                	bnez	a0,2a8c <__sfvwrite_r+0x6e>
     2a78:	8656                	mv	a2,s5
     2a7a:	45a9                	li	a1,10
@@ -5557,9 +5557,9 @@ void handler_irq_fast_gpio_7(void)
     2a96:	481c                	lw	a5,16(s0)
     2a98:	4404                	lw	s1,8(s0)
     2a9a:	4854                	lw	a3,20(s0)
-    2a9c:	22a7f063          	bgeu	a5,a0,2cbc <memory.c.a1effd0a+0xc7>
+    2a9c:	22a7f063          	bgeu	a5,a0,2cbc <memory.c.a1c3d62e+0xc7>
     2aa0:	94b6                	add	s1,s1,a3
-    2aa2:	2184dd63          	bge	s1,s8,2cbc <memory.c.a1effd0a+0xc7>
+    2aa2:	2184dd63          	bge	s1,s8,2cbc <memory.c.a1c3d62e+0xc7>
     2aa6:	85da                	mv	a1,s6
     2aa8:	8626                	mv	a2,s1
     2aaa:	2ca9                	jal	2d04 <memmove>
@@ -5641,10 +5641,10 @@ void handler_irq_fast_gpio_7(void)
     2b6c:	01071793          	slli	a5,a4,0x10
     2b70:	20077713          	andi	a4,a4,512
     2b74:	83c1                	srli	a5,a5,0x10
-    2b76:	c36d                	beqz	a4,2c58 <memory.c.a1effd0a+0x63>
-    2b78:	08cd6763          	bltu	s10,a2,2c06 <memory.c.a1effd0a+0x11>
+    2b76:	c36d                	beqz	a4,2c58 <memory.c.a1c3d62e+0x63>
+    2b78:	08cd6763          	bltu	s10,a2,2c06 <memory.c.a1c3d62e+0x11>
     2b7c:	4807f713          	andi	a4,a5,1152
-    2b80:	c359                	beqz	a4,2c06 <memory.c.a1effd0a+0x11>
+    2b80:	c359                	beqz	a4,2c06 <memory.c.a1c3d62e+0x11>
     2b82:	4844                	lw	s1,20(s0)
     2b84:	480c                	lw	a1,16(s0)
     2b86:	029c04b3          	mul	s1,s8,s1
@@ -5655,7 +5655,7 @@ void handler_irq_fast_gpio_7(void)
     2b98:	00e4f363          	bgeu	s1,a4,2b9e <__sfvwrite_r+0x180>
     2b9c:	84ba                	mv	s1,a4
     2b9e:	4007f793          	andi	a5,a5,1024
-    2ba2:	cbd9                	beqz	a5,2c38 <memory.c.a1effd0a+0x43>
+    2ba2:	cbd9                	beqz	a5,2c38 <memory.c.a1c3d62e+0x43>
     2ba4:	85a6                	mv	a1,s1
     2ba6:	854a                	mv	a0,s2
     2ba8:	fb2ff0ef          	jal	ra,235a <_malloc_r>
@@ -5692,7 +5692,7 @@ void handler_irq_fast_gpio_7(void)
     2c02:	866a                	mv	a2,s10
     2c04:	c404                	sw	s1,8(s0)
     2c06:	84ea                	mv	s1,s10
-    2c08:	00cd7363          	bgeu	s10,a2,2c0e <memory.c.a1effd0a+0x19>
+    2c08:	00cd7363          	bgeu	s10,a2,2c0e <memory.c.a1c3d62e+0x19>
     2c0c:	866a                	mv	a2,s10
     2c0e:	4008                	lw	a0,0(s0)
     2c10:	85d6                	mv	a1,s5
@@ -5716,7 +5716,7 @@ void handler_irq_fast_gpio_7(void)
     2c3a:	854a                	mv	a0,s2
     2c3c:	20fd                	jal	2d2a <_realloc_r>
     2c3e:	87aa                	mv	a5,a0
-    2c40:	f95d                	bnez	a0,2bf6 <memory.c.a1effd0a+0x1>
+    2c40:	f95d                	bnez	a0,2bf6 <memory.c.a1c3d62e+0x1>
     2c42:	480c                	lw	a1,16(s0)
     2c44:	854a                	mv	a0,s2
     2c46:	e72ff0ef          	jal	ra,22b8 <_free_r>
@@ -5725,11 +5725,11 @@ void handler_irq_fast_gpio_7(void)
     2c52:	00f41623          	sh	a5,12(s0)
     2c56:	bfa1                	j	2bae <__sfvwrite_r+0x190>
     2c58:	481c                	lw	a5,16(s0)
-    2c5a:	00a7e563          	bltu	a5,a0,2c64 <memory.c.a1effd0a+0x6f>
+    2c5a:	00a7e563          	bltu	a5,a0,2c64 <memory.c.a1c3d62e+0x6f>
     2c5e:	4854                	lw	a3,20(s0)
-    2c60:	02dd7663          	bgeu	s10,a3,2c8c <memory.c.a1effd0a+0x97>
+    2c60:	02dd7663          	bgeu	s10,a3,2c8c <memory.c.a1c3d62e+0x97>
     2c64:	84b2                	mv	s1,a2
-    2c66:	00cd7363          	bgeu	s10,a2,2c6c <memory.c.a1effd0a+0x77>
+    2c66:	00cd7363          	bgeu	s10,a2,2c6c <memory.c.a1c3d62e+0x77>
     2c6a:	84ea                	mv	s1,s10
     2c6c:	8626                	mv	a2,s1
     2c6e:	85d6                	mv	a1,s5
@@ -5740,14 +5740,14 @@ void handler_irq_fast_gpio_7(void)
     2c78:	9726                	add	a4,a4,s1
     2c7a:	c41c                	sw	a5,8(s0)
     2c7c:	c018                	sw	a4,0(s0)
-    2c7e:	f3dd                	bnez	a5,2c24 <memory.c.a1effd0a+0x2f>
+    2c7e:	f3dd                	bnez	a5,2c24 <memory.c.a1c3d62e+0x2f>
     2c80:	85a2                	mv	a1,s0
     2c82:	854a                	mv	a0,s2
     2c84:	a00ff0ef          	jal	ra,1e84 <_fflush_r>
-    2c88:	dd51                	beqz	a0,2c24 <memory.c.a1effd0a+0x2f>
+    2c88:	dd51                	beqz	a0,2c24 <memory.c.a1c3d62e+0x2f>
     2c8a:	b72d                	j	2bb4 <__sfvwrite_r+0x196>
     2c8c:	87da                	mv	a5,s6
-    2c8e:	01abe363          	bltu	s7,s10,2c94 <memory.c.a1effd0a+0x9f>
+    2c8e:	01abe363          	bltu	s7,s10,2c94 <memory.c.a1c3d62e+0x9f>
     2c92:	87ea                	mv	a5,s10
     2c94:	02d7c7b3          	div	a5,a5,a3
     2c98:	5418                	lw	a4,40(s0)
@@ -5757,14 +5757,14 @@ void handler_irq_fast_gpio_7(void)
     2ca0:	02d786b3          	mul	a3,a5,a3
     2ca4:	9702                	jalr	a4
     2ca6:	84aa                	mv	s1,a0
-    2ca8:	f6a04ee3          	bgtz	a0,2c24 <memory.c.a1effd0a+0x2f>
+    2ca8:	f6a04ee3          	bgtz	a0,2c24 <memory.c.a1c3d62e+0x2f>
     2cac:	b721                	j	2bb4 <__sfvwrite_r+0x196>
     2cae:	0009ab03          	lw	s6,0(s3)
     2cb2:	0049aa83          	lw	s5,4(s3)
     2cb6:	4501                	li	a0,0
     2cb8:	09a1                	addi	s3,s3,8
     2cba:	bb65                	j	2a72 <__sfvwrite_r+0x54>
-    2cbc:	00dc4b63          	blt	s8,a3,2cd2 <memory.c.a1effd0a+0xdd>
+    2cbc:	00dc4b63          	blt	s8,a3,2cd2 <memory.c.a1c3d62e+0xdd>
     2cc0:	541c                	lw	a5,40(s0)
     2cc2:	500c                	lw	a1,32(s0)
     2cc4:	865a                	mv	a2,s6
@@ -5802,7 +5802,7 @@ void handler_irq_fast_gpio_7(void)
     2d08:	4685                	li	a3,1
     2d0a:	00b56763          	bltu	a0,a1,2d18 <memmove+0x14>
     2d0e:	56fd                	li	a3,-1
-    2d10:	fff60713          	addi	a4,a2,-1 # ffff <randombytes.c.2b898991+0x4ed2>
+    2d10:	fff60713          	addi	a4,a2,-1 # ffff <randombytes.c.7b0b7543+0x4ed2>
     2d14:	933a                	add	t1,t1,a4
     2d16:	95ba                	add	a1,a1,a4
     2d18:	00058383          	lb	t2,0(a1)
@@ -5832,7 +5832,7 @@ void handler_irq_fast_gpio_7(void)
     2d48:	85b2                	mv	a1,a2
     2d4a:	6105                	addi	sp,sp,32
     2d4c:	e0eff06f          	j	235a <_malloc_r>
-    2d50:	ee09                	bnez	a2,2d6a <soc_ctrl.c.86ae75dc+0x11>
+    2d50:	ee09                	bnez	a2,2d6a <soc_ctrl.c.2e27f161+0x11>
     2d52:	d66ff0ef          	jal	ra,22b8 <_free_r>
     2d56:	4481                	li	s1,0
     2d58:	40f2                	lw	ra,28(sp)
@@ -5848,7 +5848,7 @@ void handler_irq_fast_gpio_7(void)
     2d6c:	892e                	mv	s2,a1
     2d6e:	266d                	jal	3118 <_malloc_usable_size_r>
     2d70:	89aa                	mv	s3,a0
-    2d72:	00856763          	bltu	a0,s0,2d80 <soc_ctrl.c.86ae75dc+0x27>
+    2d72:	00856763          	bltu	a0,s0,2d80 <soc_ctrl.c.2e27f161+0x27>
     2d76:	00155793          	srli	a5,a0,0x1
     2d7a:	84ca                	mv	s1,s2
     2d7c:	fc87eee3          	bltu	a5,s0,2d58 <_realloc_r+0x2e>
@@ -5858,7 +5858,7 @@ void handler_irq_fast_gpio_7(void)
     2d88:	84aa                	mv	s1,a0
     2d8a:	d579                	beqz	a0,2d58 <_realloc_r+0x2e>
     2d8c:	8622                	mv	a2,s0
-    2d8e:	0089f363          	bgeu	s3,s0,2d94 <soc_ctrl.c.86ae75dc+0x3b>
+    2d8e:	0089f363          	bgeu	s3,s0,2d94 <soc_ctrl.c.2e27f161+0x3b>
     2d92:	864e                	mv	a2,s3
     2d94:	85ca                	mv	a1,s2
     2d96:	8526                	mv	a0,s1
@@ -5998,9 +5998,9 @@ void handler_irq_fast_gpio_7(void)
     2edc:	06200793          	li	a5,98
     2ee0:	04358693          	addi	a3,a1,67
     2ee4:	0117ed63          	bltu	a5,a7,2efe <_printf_i+0x48>
-    2ee8:	1a088e63          	beqz	a7,30a4 <uart.c.d11b7a38+0xed>
+    2ee8:	1a088e63          	beqz	a7,30a4 <uart.c.89e8be80+0xed>
     2eec:	05800793          	li	a5,88
-    2ef0:	16f88f63          	beq	a7,a5,306e <uart.c.d11b7a38+0xb7>
+    2ef0:	16f88f63          	beq	a7,a5,306e <uart.c.89e8be80+0xb7>
     2ef4:	04240a93          	addi	s5,s0,66
     2ef8:	05140123          	sb	a7,66(s0)
     2efc:	a80d                	j	2f2e <_printf_i+0x78>
@@ -6021,7 +6021,7 @@ void handler_irq_fast_gpio_7(void)
     2f28:	c314                	sw	a3,0(a4)
     2f2a:	04f58123          	sb	a5,66(a1)
     2f2e:	4785                	li	a5,1
-    2f30:	aa69                	j	30ca <uart.c.d11b7a38+0x113>
+    2f30:	aa69                	j	30ca <uart.c.89e8be80+0x113>
     2f32:	419c                	lw	a5,0(a1)
     2f34:	4308                	lw	a0,0(a4)
     2f36:	0807f613          	andi	a2,a5,128
@@ -6059,7 +6059,7 @@ void handler_irq_fast_gpio_7(void)
     2f90:	00080837          	lui	a6,0x80
     2f94:	06f00713          	li	a4,111
     2f98:	32080813          	addi	a6,a6,800 # 80320 <__sf_fake_stdout+0x34>
-    2f9c:	0ce88e63          	beq	a7,a4,3078 <uart.c.d11b7a38+0xc1>
+    2f9c:	0ce88e63          	beq	a7,a4,3078 <uart.c.89e8be80+0xc1>
     2fa0:	4729                	li	a4,10
     2fa2:	040401a3          	sb	zero,67(s0)
     2fa6:	4050                	lw	a2,4(s0)
@@ -6068,9 +6068,9 @@ void handler_irq_fast_gpio_7(void)
     2fae:	400c                	lw	a1,0(s0)
     2fb0:	99ed                	andi	a1,a1,-5
     2fb2:	c00c                	sw	a1,0(s0)
-    2fb4:	e399                	bnez	a5,2fba <uart.c.d11b7a38+0x3>
+    2fb4:	e399                	bnez	a5,2fba <uart.c.89e8be80+0x3>
     2fb6:	8ab6                	mv	s5,a3
-    2fb8:	ce19                	beqz	a2,2fd6 <uart.c.d11b7a38+0x1f>
+    2fb8:	ce19                	beqz	a2,2fd6 <uart.c.89e8be80+0x1f>
     2fba:	8ab6                	mv	s5,a3
     2fbc:	02e7f633          	remu	a2,a5,a4
     2fc0:	1afd                	addi	s5,s5,-1
@@ -6079,15 +6079,15 @@ void handler_irq_fast_gpio_7(void)
     2fc8:	00ca8023          	sb	a2,0(s5)
     2fcc:	863e                	mv	a2,a5
     2fce:	02e7d7b3          	divu	a5,a5,a4
-    2fd2:	fee675e3          	bgeu	a2,a4,2fbc <uart.c.d11b7a38+0x5>
+    2fd2:	fee675e3          	bgeu	a2,a4,2fbc <uart.c.89e8be80+0x5>
     2fd6:	47a1                	li	a5,8
-    2fd8:	00f71e63          	bne	a4,a5,2ff4 <uart.c.d11b7a38+0x3d>
+    2fd8:	00f71e63          	bne	a4,a5,2ff4 <uart.c.89e8be80+0x3d>
     2fdc:	401c                	lw	a5,0(s0)
     2fde:	8b85                	andi	a5,a5,1
-    2fe0:	cb91                	beqz	a5,2ff4 <uart.c.d11b7a38+0x3d>
+    2fe0:	cb91                	beqz	a5,2ff4 <uart.c.89e8be80+0x3d>
     2fe2:	4058                	lw	a4,4(s0)
     2fe4:	481c                	lw	a5,16(s0)
-    2fe6:	00e7c763          	blt	a5,a4,2ff4 <uart.c.d11b7a38+0x3d>
+    2fe6:	00e7c763          	blt	a5,a4,2ff4 <uart.c.89e8be80+0x3d>
     2fea:	03000793          	li	a5,48
     2fee:	fefa8fa3          	sb	a5,-1(s5)
     2ff2:	1afd                	addi	s5,s5,-1
@@ -6100,7 +6100,7 @@ void handler_irq_fast_gpio_7(void)
     3002:	8526                	mv	a0,s1
     3004:	334d                	jal	2da6 <_printf_common>
     3006:	5a7d                	li	s4,-1
-    3008:	0d451563          	bne	a0,s4,30d2 <uart.c.d11b7a38+0x11b>
+    3008:	0d451563          	bne	a0,s4,30d2 <uart.c.89e8be80+0x11b>
     300c:	557d                	li	a0,-1
     300e:	50b2                	lw	ra,44(sp)
     3010:	5422                	lw	s0,40(sp)
@@ -6124,14 +6124,14 @@ void handler_irq_fast_gpio_7(void)
     303e:	08067513          	andi	a0,a2,128
     3042:	419c                	lw	a5,0(a1)
     3044:	0591                	addi	a1,a1,4
-    3046:	e511                	bnez	a0,3052 <uart.c.d11b7a38+0x9b>
+    3046:	e511                	bnez	a0,3052 <uart.c.89e8be80+0x9b>
     3048:	04067513          	andi	a0,a2,64
-    304c:	c119                	beqz	a0,3052 <uart.c.d11b7a38+0x9b>
+    304c:	c119                	beqz	a0,3052 <uart.c.89e8be80+0x9b>
     304e:	07c2                	slli	a5,a5,0x10
     3050:	83c1                	srli	a5,a5,0x10
     3052:	c30c                	sw	a1,0(a4)
     3054:	00167713          	andi	a4,a2,1
-    3058:	c701                	beqz	a4,3060 <uart.c.d11b7a38+0xa9>
+    3058:	c701                	beqz	a4,3060 <uart.c.89e8be80+0xa9>
     305a:	02066613          	ori	a2,a2,32
     305e:	c010                	sw	a2,0(s0)
     3060:	4741                	li	a4,16
@@ -6142,7 +6142,7 @@ void handler_irq_fast_gpio_7(void)
     306c:	bf1d                	j	2fa2 <_printf_i+0xec>
     306e:	00080837          	lui	a6,0x80
     3072:	32080813          	addi	a6,a6,800 # 80320 <__sf_fake_stdout+0x34>
-    3076:	b7c1                	j	3036 <uart.c.d11b7a38+0x7f>
+    3076:	b7c1                	j	3036 <uart.c.89e8be80+0x7f>
     3078:	4721                	li	a4,8
     307a:	b725                	j	2fa2 <_printf_i+0xec>
     307c:	4190                	lw	a2,0(a1)
@@ -6150,19 +6150,19 @@ void handler_irq_fast_gpio_7(void)
     3080:	49cc                	lw	a1,20(a1)
     3082:	08067813          	andi	a6,a2,128
     3086:	00478513          	addi	a0,a5,4
-    308a:	00080663          	beqz	a6,3096 <uart.c.d11b7a38+0xdf>
+    308a:	00080663          	beqz	a6,3096 <uart.c.89e8be80+0xdf>
     308e:	c308                	sw	a0,0(a4)
     3090:	439c                	lw	a5,0(a5)
     3092:	c38c                	sw	a1,0(a5)
-    3094:	a801                	j	30a4 <uart.c.d11b7a38+0xed>
+    3094:	a801                	j	30a4 <uart.c.89e8be80+0xed>
     3096:	c308                	sw	a0,0(a4)
     3098:	04067613          	andi	a2,a2,64
     309c:	439c                	lw	a5,0(a5)
-    309e:	da75                	beqz	a2,3092 <uart.c.d11b7a38+0xdb>
+    309e:	da75                	beqz	a2,3092 <uart.c.89e8be80+0xdb>
     30a0:	00b79023          	sh	a1,0(a5)
     30a4:	00042823          	sw	zero,16(s0)
     30a8:	8ab6                	mv	s5,a3
-    30aa:	bf81                	j	2ffa <uart.c.d11b7a38+0x43>
+    30aa:	bf81                	j	2ffa <uart.c.89e8be80+0x43>
     30ac:	431c                	lw	a5,0(a4)
     30ae:	41d0                	lw	a2,4(a1)
     30b0:	4581                	li	a1,0
@@ -6171,43 +6171,43 @@ void handler_irq_fast_gpio_7(void)
     30b8:	0007aa83          	lw	s5,0(a5)
     30bc:	8556                	mv	a0,s5
     30be:	3135                	jal	2cea <memchr>
-    30c0:	c501                	beqz	a0,30c8 <uart.c.d11b7a38+0x111>
+    30c0:	c501                	beqz	a0,30c8 <uart.c.89e8be80+0x111>
     30c2:	41550533          	sub	a0,a0,s5
     30c6:	c048                	sw	a0,4(s0)
     30c8:	405c                	lw	a5,4(s0)
     30ca:	c81c                	sw	a5,16(s0)
     30cc:	040401a3          	sb	zero,67(s0)
-    30d0:	b72d                	j	2ffa <uart.c.d11b7a38+0x43>
+    30d0:	b72d                	j	2ffa <uart.c.89e8be80+0x43>
     30d2:	4814                	lw	a3,16(s0)
     30d4:	8656                	mv	a2,s5
     30d6:	85ca                	mv	a1,s2
     30d8:	8526                	mv	a0,s1
     30da:	9982                	jalr	s3
-    30dc:	f34508e3          	beq	a0,s4,300c <uart.c.d11b7a38+0x55>
+    30dc:	f34508e3          	beq	a0,s4,300c <uart.c.89e8be80+0x55>
     30e0:	401c                	lw	a5,0(s0)
     30e2:	8b89                	andi	a5,a5,2
-    30e4:	e78d                	bnez	a5,310e <uart.c.d11b7a38+0x157>
+    30e4:	e78d                	bnez	a5,310e <uart.c.89e8be80+0x157>
     30e6:	47b2                	lw	a5,12(sp)
     30e8:	4448                	lw	a0,12(s0)
-    30ea:	f2f552e3          	bge	a0,a5,300e <uart.c.d11b7a38+0x57>
+    30ea:	f2f552e3          	bge	a0,a5,300e <uart.c.89e8be80+0x57>
     30ee:	853e                	mv	a0,a5
-    30f0:	bf39                	j	300e <uart.c.d11b7a38+0x57>
+    30f0:	bf39                	j	300e <uart.c.89e8be80+0x57>
     30f2:	4685                	li	a3,1
     30f4:	8656                	mv	a2,s5
     30f6:	85ca                	mv	a1,s2
     30f8:	8526                	mv	a0,s1
     30fa:	9982                	jalr	s3
-    30fc:	f16508e3          	beq	a0,s6,300c <uart.c.d11b7a38+0x55>
+    30fc:	f16508e3          	beq	a0,s6,300c <uart.c.89e8be80+0x55>
     3100:	0a05                	addi	s4,s4,1
     3102:	445c                	lw	a5,12(s0)
     3104:	4732                	lw	a4,12(sp)
     3106:	8f99                	sub	a5,a5,a4
-    3108:	fefa45e3          	blt	s4,a5,30f2 <uart.c.d11b7a38+0x13b>
-    310c:	bfe9                	j	30e6 <uart.c.d11b7a38+0x12f>
+    3108:	fefa45e3          	blt	s4,a5,30f2 <uart.c.89e8be80+0x13b>
+    310c:	bfe9                	j	30e6 <uart.c.89e8be80+0x12f>
     310e:	4a01                	li	s4,0
     3110:	01940a93          	addi	s5,s0,25
     3114:	5b7d                	li	s6,-1
-    3116:	b7f5                	j	3102 <uart.c.d11b7a38+0x14b>
+    3116:	b7f5                	j	3102 <uart.c.89e8be80+0x14b>
 
 00003118 <_malloc_usable_size_r>:
     3118:	ffc5a783          	lw	a5,-4(a1)
@@ -6472,7 +6472,7 @@ void handler_irq_fast_gpio_7(void)
     3460:	0542                	slli	a0,a0,0x10
     3462:	6ec1                	lui	t4,0x10
     3464:	8d59                	or	a0,a0,a4
-    3466:	fffe8693          	addi	a3,t4,-1 # ffff <randombytes.c.2b898991+0x4ed2>
+    3466:	fffe8693          	addi	a3,t4,-1 # ffff <randombytes.c.7b0b7543+0x4ed2>
     346a:	00d57733          	and	a4,a0,a3
     346e:	410787b3          	sub	a5,a5,a6
     3472:	8ef1                	and	a3,a3,a2
@@ -6512,12 +6512,12 @@ void handler_irq_fast_gpio_7(void)
     34ce:	8732                	mv	a4,a2
     34d0:	882a                	mv	a6,a0
     34d2:	87ae                	mv	a5,a1
-    34d4:	20069663          	bnez	a3,36e0 <rv_plic.c.2703d085+0x1e5>
+    34d4:	20069663          	bnez	a3,36e0 <rv_plic.c.3ecfba16+0x1e5>
     34d8:	000805b7          	lui	a1,0x80
     34dc:	3a058593          	addi	a1,a1,928 # 803a0 <__clz_tab>
-    34e0:	0cc8f163          	bgeu	a7,a2,35a2 <rv_plic.c.2703d085+0xa7>
+    34e0:	0cc8f163          	bgeu	a7,a2,35a2 <rv_plic.c.3ecfba16+0xa7>
     34e4:	66c1                	lui	a3,0x10
-    34e6:	0ad67763          	bgeu	a2,a3,3594 <rv_plic.c.2703d085+0x99>
+    34e6:	0ad67763          	bgeu	a2,a3,3594 <rv_plic.c.3ecfba16+0x99>
     34ea:	10063693          	sltiu	a3,a2,256
     34ee:	0016c693          	xori	a3,a3,1
     34f2:	068e                	slli	a3,a3,0x3
@@ -6527,7 +6527,7 @@ void handler_irq_fast_gpio_7(void)
     34fe:	02000513          	li	a0,32
     3502:	96ae                	add	a3,a3,a1
     3504:	40d505b3          	sub	a1,a0,a3
-    3508:	00d50b63          	beq	a0,a3,351e <rv_plic.c.2703d085+0x23>
+    3508:	00d50b63          	beq	a0,a3,351e <rv_plic.c.3ecfba16+0x23>
     350c:	00b897b3          	sll	a5,a7,a1
     3510:	00d356b3          	srl	a3,t1,a3
     3514:	00b61733          	sll	a4,a2,a1
@@ -6543,11 +6543,11 @@ void handler_irq_fast_gpio_7(void)
     3536:	01079693          	slli	a3,a5,0x10
     353a:	01085793          	srli	a5,a6,0x10
     353e:	8fd5                	or	a5,a5,a3
-    3540:	0117fc63          	bgeu	a5,a7,3558 <rv_plic.c.2703d085+0x5d>
+    3540:	0117fc63          	bgeu	a5,a7,3558 <rv_plic.c.3ecfba16+0x5d>
     3544:	97ba                	add	a5,a5,a4
     3546:	fff30513          	addi	a0,t1,-1
-    354a:	00e7e763          	bltu	a5,a4,3558 <rv_plic.c.2703d085+0x5d>
-    354e:	0117f563          	bgeu	a5,a7,3558 <rv_plic.c.2703d085+0x5d>
+    354a:	00e7e763          	bltu	a5,a4,3558 <rv_plic.c.3ecfba16+0x5d>
+    354e:	0117f563          	bgeu	a5,a7,3558 <rv_plic.c.3ecfba16+0x5d>
     3552:	ffe30513          	addi	a0,t1,-2
     3556:	97ba                	add	a5,a5,a4
     3558:	411787b3          	sub	a5,a5,a7
@@ -6559,11 +6559,11 @@ void handler_irq_fast_gpio_7(void)
     356e:	07c2                	slli	a5,a5,0x10
     3570:	00f86833          	or	a6,a6,a5
     3574:	87c6                	mv	a5,a7
-    3576:	00d87b63          	bgeu	a6,a3,358c <rv_plic.c.2703d085+0x91>
+    3576:	00d87b63          	bgeu	a6,a3,358c <rv_plic.c.3ecfba16+0x91>
     357a:	983a                	add	a6,a6,a4
     357c:	fff88793          	addi	a5,a7,-1
-    3580:	00e86663          	bltu	a6,a4,358c <rv_plic.c.2703d085+0x91>
-    3584:	00d87463          	bgeu	a6,a3,358c <rv_plic.c.2703d085+0x91>
+    3580:	00e86663          	bltu	a6,a4,358c <rv_plic.c.3ecfba16+0x91>
+    3584:	00d87463          	bgeu	a6,a3,358c <rv_plic.c.3ecfba16+0x91>
     3588:	ffe88793          	addi	a5,a7,-2
     358c:	0542                	slli	a0,a0,0x10
     358e:	8d5d                	or	a0,a0,a5
@@ -6574,10 +6574,10 @@ void handler_irq_fast_gpio_7(void)
     359a:	f4a66de3          	bltu	a2,a0,34f4 <__udivdi3+0x2a>
     359e:	46e1                	li	a3,24
     35a0:	bf91                	j	34f4 <__udivdi3+0x2a>
-    35a2:	e211                	bnez	a2,35a6 <rv_plic.c.2703d085+0xab>
+    35a2:	e211                	bnez	a2,35a6 <rv_plic.c.3ecfba16+0xab>
     35a4:	9002                	ebreak
     35a6:	67c1                	lui	a5,0x10
-    35a8:	08f67f63          	bgeu	a2,a5,3646 <rv_plic.c.2703d085+0x14b>
+    35a8:	08f67f63          	bgeu	a2,a5,3646 <rv_plic.c.3ecfba16+0x14b>
     35ac:	10063693          	sltiu	a3,a2,256
     35b0:	0016c693          	xori	a3,a3,1
     35b4:	068e                	slli	a3,a3,0x3
@@ -6587,7 +6587,7 @@ void handler_irq_fast_gpio_7(void)
     35c0:	97b6                	add	a5,a5,a3
     35c2:	02000693          	li	a3,32
     35c6:	40f685b3          	sub	a1,a3,a5
-    35ca:	08f69563          	bne	a3,a5,3654 <rv_plic.c.2703d085+0x159>
+    35ca:	08f69563          	bne	a3,a5,3654 <rv_plic.c.3ecfba16+0x159>
     35ce:	40c887b3          	sub	a5,a7,a2
     35d2:	4585                	li	a1,1
     35d4:	01075893          	srli	a7,a4,0x10
@@ -6600,11 +6600,11 @@ void handler_irq_fast_gpio_7(void)
     35ec:	03c60333          	mul	t1,a2,t3
     35f0:	07c2                	slli	a5,a5,0x10
     35f2:	8fd5                	or	a5,a5,a3
-    35f4:	0067fc63          	bgeu	a5,t1,360c <rv_plic.c.2703d085+0x111>
+    35f4:	0067fc63          	bgeu	a5,t1,360c <rv_plic.c.3ecfba16+0x111>
     35f8:	97ba                	add	a5,a5,a4
     35fa:	fffe0513          	addi	a0,t3,-1
-    35fe:	00e7e763          	bltu	a5,a4,360c <rv_plic.c.2703d085+0x111>
-    3602:	0067f563          	bgeu	a5,t1,360c <rv_plic.c.2703d085+0x111>
+    35fe:	00e7e763          	bltu	a5,a4,360c <rv_plic.c.3ecfba16+0x111>
+    3602:	0067f563          	bgeu	a5,t1,360c <rv_plic.c.3ecfba16+0x111>
     3606:	ffee0513          	addi	a0,t3,-2
     360a:	97ba                	add	a5,a5,a4
     360c:	406787b3          	sub	a5,a5,t1
@@ -6616,20 +6616,20 @@ void handler_irq_fast_gpio_7(void)
     3622:	07c2                	slli	a5,a5,0x10
     3624:	00f86833          	or	a6,a6,a5
     3628:	879a                	mv	a5,t1
-    362a:	00d87b63          	bgeu	a6,a3,3640 <rv_plic.c.2703d085+0x145>
+    362a:	00d87b63          	bgeu	a6,a3,3640 <rv_plic.c.3ecfba16+0x145>
     362e:	983a                	add	a6,a6,a4
     3630:	fff30793          	addi	a5,t1,-1
-    3634:	00e86663          	bltu	a6,a4,3640 <rv_plic.c.2703d085+0x145>
-    3638:	00d87463          	bgeu	a6,a3,3640 <rv_plic.c.2703d085+0x145>
+    3634:	00e86663          	bltu	a6,a4,3640 <rv_plic.c.3ecfba16+0x145>
+    3638:	00d87463          	bgeu	a6,a3,3640 <rv_plic.c.3ecfba16+0x145>
     363c:	ffe30793          	addi	a5,t1,-2
     3640:	0542                	slli	a0,a0,0x10
     3642:	8d5d                	or	a0,a0,a5
     3644:	8082                	ret
     3646:	010007b7          	lui	a5,0x1000
     364a:	46c1                	li	a3,16
-    364c:	f6f665e3          	bltu	a2,a5,35b6 <rv_plic.c.2703d085+0xbb>
+    364c:	f6f665e3          	bltu	a2,a5,35b6 <rv_plic.c.3ecfba16+0xbb>
     3650:	46e1                	li	a3,24
-    3652:	b795                	j	35b6 <rv_plic.c.2703d085+0xbb>
+    3652:	b795                	j	35b6 <rv_plic.c.3ecfba16+0xbb>
     3654:	00b61733          	sll	a4,a2,a1
     3658:	00f8d6b3          	srl	a3,a7,a5
     365c:	01075513          	srli	a0,a4,0x10
@@ -6646,11 +6646,11 @@ void handler_irq_fast_gpio_7(void)
     3686:	0107d693          	srli	a3,a5,0x10
     368a:	8ecd                	or	a3,a3,a1
     368c:	859a                	mv	a1,t1
-    368e:	0116fc63          	bgeu	a3,a7,36a6 <rv_plic.c.2703d085+0x1ab>
+    368e:	0116fc63          	bgeu	a3,a7,36a6 <rv_plic.c.3ecfba16+0x1ab>
     3692:	96ba                	add	a3,a3,a4
     3694:	fff30593          	addi	a1,t1,-1
-    3698:	00e6e763          	bltu	a3,a4,36a6 <rv_plic.c.2703d085+0x1ab>
-    369c:	0116f563          	bgeu	a3,a7,36a6 <rv_plic.c.2703d085+0x1ab>
+    3698:	00e6e763          	bltu	a3,a4,36a6 <rv_plic.c.3ecfba16+0x1ab>
+    369c:	0116f563          	bgeu	a3,a7,36a6 <rv_plic.c.3ecfba16+0x1ab>
     36a0:	ffe30593          	addi	a1,t1,-2
     36a4:	96ba                	add	a3,a3,a4
     36a6:	411686b3          	sub	a3,a3,a7
@@ -6662,20 +6662,20 @@ void handler_irq_fast_gpio_7(void)
     36ba:	06c2                	slli	a3,a3,0x10
     36bc:	8fd5                	or	a5,a5,a3
     36be:	86c6                	mv	a3,a7
-    36c0:	00c7fc63          	bgeu	a5,a2,36d8 <rv_plic.c.2703d085+0x1dd>
+    36c0:	00c7fc63          	bgeu	a5,a2,36d8 <rv_plic.c.3ecfba16+0x1dd>
     36c4:	97ba                	add	a5,a5,a4
     36c6:	fff88693          	addi	a3,a7,-1
-    36ca:	00e7e763          	bltu	a5,a4,36d8 <rv_plic.c.2703d085+0x1dd>
-    36ce:	00c7f563          	bgeu	a5,a2,36d8 <rv_plic.c.2703d085+0x1dd>
+    36ca:	00e7e763          	bltu	a5,a4,36d8 <rv_plic.c.3ecfba16+0x1dd>
+    36ce:	00c7f563          	bgeu	a5,a2,36d8 <rv_plic.c.3ecfba16+0x1dd>
     36d2:	ffe88693          	addi	a3,a7,-2
     36d6:	97ba                	add	a5,a5,a4
     36d8:	05c2                	slli	a1,a1,0x10
     36da:	8f91                	sub	a5,a5,a2
     36dc:	8dd5                	or	a1,a1,a3
-    36de:	bddd                	j	35d4 <rv_plic.c.2703d085+0xd9>
-    36e0:	14d5e163          	bltu	a1,a3,3822 <rv_plic.c.2703d085+0x327>
+    36de:	bddd                	j	35d4 <rv_plic.c.3ecfba16+0xd9>
+    36e0:	14d5e163          	bltu	a1,a3,3822 <rv_plic.c.3ecfba16+0x327>
     36e4:	67c1                	lui	a5,0x10
-    36e6:	02f6ff63          	bgeu	a3,a5,3724 <rv_plic.c.2703d085+0x229>
+    36e6:	02f6ff63          	bgeu	a3,a5,3724 <rv_plic.c.3ecfba16+0x229>
     36ea:	1006b713          	sltiu	a4,a3,256
     36ee:	00174713          	xori	a4,a4,1
     36f2:	070e                	slli	a4,a4,0x3
@@ -6687,17 +6687,17 @@ void handler_irq_fast_gpio_7(void)
     3706:	97ba                	add	a5,a5,a4
     3708:	02000713          	li	a4,32
     370c:	40f705b3          	sub	a1,a4,a5
-    3710:	02f71163          	bne	a4,a5,3732 <rv_plic.c.2703d085+0x237>
+    3710:	02f71163          	bne	a4,a5,3732 <rv_plic.c.3ecfba16+0x237>
     3714:	4505                	li	a0,1
-    3716:	e716eee3          	bltu	a3,a7,3592 <rv_plic.c.2703d085+0x97>
+    3716:	e716eee3          	bltu	a3,a7,3592 <rv_plic.c.3ecfba16+0x97>
     371a:	00c33533          	sltu	a0,t1,a2
     371e:	00154513          	xori	a0,a0,1
     3722:	8082                	ret
     3724:	010007b7          	lui	a5,0x1000
     3728:	4741                	li	a4,16
-    372a:	fcf6e5e3          	bltu	a3,a5,36f4 <rv_plic.c.2703d085+0x1f9>
+    372a:	fcf6e5e3          	bltu	a3,a5,36f4 <rv_plic.c.3ecfba16+0x1f9>
     372e:	4761                	li	a4,24
-    3730:	b7d1                	j	36f4 <rv_plic.c.2703d085+0x1f9>
+    3730:	b7d1                	j	36f4 <rv_plic.c.3ecfba16+0x1f9>
     3732:	00f65733          	srl	a4,a2,a5
     3736:	00b696b3          	sll	a3,a3,a1
     373a:	8ed9                	or	a3,a3,a4
@@ -6716,11 +6716,11 @@ void handler_irq_fast_gpio_7(void)
     376c:	0107d713          	srli	a4,a5,0x10
     3770:	8f49                	or	a4,a4,a0
     3772:	8576                	mv	a0,t4
-    3774:	01c77c63          	bgeu	a4,t3,378c <rv_plic.c.2703d085+0x291>
+    3774:	01c77c63          	bgeu	a4,t3,378c <rv_plic.c.3ecfba16+0x291>
     3778:	9736                	add	a4,a4,a3
     377a:	fffe8513          	addi	a0,t4,-1
-    377e:	00d76763          	bltu	a4,a3,378c <rv_plic.c.2703d085+0x291>
-    3782:	01c77563          	bgeu	a4,t3,378c <rv_plic.c.2703d085+0x291>
+    377e:	00d76763          	bltu	a4,a3,378c <rv_plic.c.3ecfba16+0x291>
+    3782:	01c77563          	bgeu	a4,t3,378c <rv_plic.c.3ecfba16+0x291>
     3786:	ffee8513          	addi	a0,t4,-2
     378a:	9736                	add	a4,a4,a3
     378c:	41c70733          	sub	a4,a4,t3
@@ -6732,17 +6732,17 @@ void handler_irq_fast_gpio_7(void)
     37a0:	0742                	slli	a4,a4,0x10
     37a2:	8fd9                	or	a5,a5,a4
     37a4:	8772                	mv	a4,t3
-    37a6:	0107fc63          	bgeu	a5,a6,37be <rv_plic.c.2703d085+0x2c3>
+    37a6:	0107fc63          	bgeu	a5,a6,37be <rv_plic.c.3ecfba16+0x2c3>
     37aa:	97b6                	add	a5,a5,a3
     37ac:	fffe0713          	addi	a4,t3,-1
-    37b0:	00d7e763          	bltu	a5,a3,37be <rv_plic.c.2703d085+0x2c3>
-    37b4:	0107f563          	bgeu	a5,a6,37be <rv_plic.c.2703d085+0x2c3>
+    37b0:	00d7e763          	bltu	a5,a3,37be <rv_plic.c.3ecfba16+0x2c3>
+    37b4:	0107f563          	bgeu	a5,a6,37be <rv_plic.c.3ecfba16+0x2c3>
     37b8:	ffee0713          	addi	a4,t3,-2
     37bc:	97b6                	add	a5,a5,a3
     37be:	0542                	slli	a0,a0,0x10
     37c0:	6e41                	lui	t3,0x10
     37c2:	8d59                	or	a0,a0,a4
-    37c4:	fffe0693          	addi	a3,t3,-1 # ffff <randombytes.c.2b898991+0x4ed2>
+    37c4:	fffe0693          	addi	a3,t3,-1 # ffff <randombytes.c.7b0b7543+0x4ed2>
     37c8:	00d57733          	and	a4,a0,a3
     37cc:	410787b3          	sub	a5,a5,a6
     37d0:	8ef1                	and	a3,a3,a2
@@ -6755,12 +6755,12 @@ void handler_irq_fast_gpio_7(void)
     37e8:	00d70633          	add	a2,a4,a3
     37ec:	0108d713          	srli	a4,a7,0x10
     37f0:	9732                	add	a4,a4,a2
-    37f2:	00d77363          	bgeu	a4,a3,37f8 <rv_plic.c.2703d085+0x2fd>
+    37f2:	00d77363          	bgeu	a4,a3,37f8 <rv_plic.c.3ecfba16+0x2fd>
     37f6:	9872                	add	a6,a6,t3
     37f8:	01075693          	srli	a3,a4,0x10
     37fc:	96c2                	add	a3,a3,a6
-    37fe:	02d7e063          	bltu	a5,a3,381e <rv_plic.c.2703d085+0x323>
-    3802:	d8d797e3          	bne	a5,a3,3590 <rv_plic.c.2703d085+0x95>
+    37fe:	02d7e063          	bltu	a5,a3,381e <rv_plic.c.3ecfba16+0x323>
+    3802:	d8d797e3          	bne	a5,a3,3590 <rv_plic.c.3ecfba16+0x95>
     3806:	67c1                	lui	a5,0x10
     3808:	17fd                	addi	a5,a5,-1
     380a:	8f7d                	and	a4,a4,a5
@@ -6769,9 +6769,9 @@ void handler_irq_fast_gpio_7(void)
     3812:	00b31333          	sll	t1,t1,a1
     3816:	9746                	add	a4,a4,a7
     3818:	4581                	li	a1,0
-    381a:	d6e37ce3          	bgeu	t1,a4,3592 <rv_plic.c.2703d085+0x97>
+    381a:	d6e37ce3          	bgeu	t1,a4,3592 <rv_plic.c.3ecfba16+0x97>
     381e:	157d                	addi	a0,a0,-1
-    3820:	bb85                	j	3590 <rv_plic.c.2703d085+0x95>
+    3820:	bb85                	j	3590 <rv_plic.c.3ecfba16+0x95>
     3822:	4581                	li	a1,0
     3824:	4501                	li	a0,0
     3826:	8082                	ret

@@ -5,12 +5,17 @@
 module xilinx_core_v_mini_mcu_wrapper
   import obi_pkg::*;
   import reg_pkg::*;
+  import ntt_intt_ip_x_heep_pkg::*;
 #(
-    parameter COREV_PULP           = 0,
-    parameter FPU                  = 0,
-    parameter ZFINX                = 0,
-    parameter X_EXT                = 0,  // eXtension interface in cv32e40x
-    parameter CLK_LED_COUNT_LENGTH = 27
+    parameter COREV_PULP = 0,
+    parameter FPU = 0,
+    parameter ZFINX = 0,
+    parameter X_EXT = 0,  // eXtension interface in cv32e40x
+    parameter CLK_LED_COUNT_LENGTH = 27,
+    parameter EXT_XBAR_NMASTER = 1,
+    parameter EXT_XBAR_NMASTER_RND = EXT_XBAR_NMASTER == 0 ? 1 : EXT_XBAR_NMASTER,
+    parameter EXT_DOMAINS_RND = core_v_mini_mcu_pkg::EXTERNAL_DOMAINS == 0 ? 1 : core_v_mini_mcu_pkg::EXTERNAL_DOMAINS
+
 ) (
 
     inout logic clk_i,
@@ -88,6 +93,71 @@ module xilinx_core_v_mini_mcu_wrapper
     end
   end
 
+
+  localparam int unsigned LOG_EXT_XBAR_NSLAVE = EXT_XBAR_NSLAVE > 32'd1 ? $clog2(
+      EXT_XBAR_NSLAVE
+  ) : 32'd1;
+
+  // External xbar master/slave and peripheral ports
+  obi_req_t [EXT_XBAR_NMASTER_RND-1:0] ext_master_req;
+  obi_req_t [EXT_XBAR_NMASTER_RND-1:0] heep_slave_req;
+  obi_resp_t [EXT_XBAR_NMASTER_RND-1:0] ext_master_resp;
+  obi_resp_t [EXT_XBAR_NMASTER_RND-1:0] heep_slave_resp;
+  obi_req_t heep_core_instr_req;
+  obi_resp_t heep_core_instr_resp;
+  obi_req_t heep_core_data_req;
+  obi_resp_t heep_core_data_resp;
+  obi_req_t heep_debug_master_req;
+  obi_resp_t heep_debug_master_resp;
+  obi_req_t heep_dma_read_ch0_req;
+  obi_resp_t heep_dma_read_ch0_resp;
+  obi_req_t heep_dma_write_ch0_req;
+  obi_resp_t heep_dma_write_ch0_resp;
+  obi_req_t heep_dma_addr_ch0_req;
+  obi_resp_t heep_dma_addr_ch0_resp;
+  obi_req_t [EXT_XBAR_NSLAVE-1:0] ext_slave_req;
+  obi_resp_t [EXT_XBAR_NSLAVE-1:0] ext_slave_resp;
+
+  reg_req_t ext_periph_slave_req;
+  reg_rsp_t ext_periph_slave_resp;
+
+
+  // Since not used an external device with master port 
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].req = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].we = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].be = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].addr = '0;
+  assign ext_master_req[ntt_intt_ip_x_heep_pkg::EXT_MASTER0_IDX].wdata = '0;
+
+
+  // External interrupts
+  logic [        core_v_mini_mcu_pkg::NEXT_INT-1:0] ext_intr_vector;
+  logic                                             ntt_intt_ip_intr;
+
+  // External subsystems
+  logic [core_v_mini_mcu_pkg::EXTERNAL_DOMAINS-1:0] external_subsystem_rst_n;
+  logic [core_v_mini_mcu_pkg::EXTERNAL_DOMAINS-1:0] external_ram_banks_set_retentive;
+
+  always_comb begin
+    // All interrupt lines set to zero by default
+    for (int i = 0; i < core_v_mini_mcu_pkg::NEXT_INT; i++) begin
+      ext_intr_vector[i] = 1'b0;
+    end
+    // Re-assign the interrupt lines used here
+    ext_intr_vector[0] = ntt_intt_ip_intr;
+  end
+
+  ntt_intt_ip_top ntt_intt_ip_top_i (
+      .clk_i(clk_i),
+      .rst_ni(rst_n),
+      .slave_req_i(ext_slave_req),
+      .slave_resp_o(ext_slave_resp),
+      .reg_req_i(ext_periph_slave_req),
+      .reg_rsp_o(ext_periph_slave_resp),
+      .ntt_intt_ip_intr_o(ntt_intt_ip_intr)
+  );
+
+
   // eXtension Interface
   if_xif #() ext_if ();
 
@@ -107,7 +177,8 @@ module xilinx_core_v_mini_mcu_wrapper
       .X_EXT(X_EXT),
       .COREV_PULP(COREV_PULP),
       .FPU(FPU),
-      .ZFINX(ZFINX)
+      .ZFINX(ZFINX),
+      .EXT_XBAR_NMASTER(ntt_intt_ip_x_heep_pkg::EXT_XBAR_NMASTER)
   ) x_heep_system_i (
       .intr_vector_ext_i('0),
       .xif_compressed_if(ext_if),
@@ -117,21 +188,21 @@ module xilinx_core_v_mini_mcu_wrapper
       .xif_mem_result_if(ext_if),
       .xif_result_if(ext_if),
       .ext_xbar_master_req_i('0),
-      .ext_xbar_master_resp_o(),
-      .ext_core_instr_req_o(),
-      .ext_core_instr_resp_i('0),
-      .ext_core_data_req_o(),
-      .ext_core_data_resp_i('0),
-      .ext_debug_master_req_o(),
-      .ext_debug_master_resp_i('0),
-      .ext_dma_read_ch0_req_o(),
-      .ext_dma_read_ch0_resp_i('0),
-      .ext_dma_write_ch0_req_o(),
-      .ext_dma_write_ch0_resp_i('0),
-      .ext_dma_addr_ch0_req_o(),
-      .ext_dma_addr_ch0_resp_i('0),
-      .ext_peripheral_slave_req_o(),
-      .ext_peripheral_slave_resp_i('0),
+      .ext_xbar_master_resp_o(heep_slave_resp),
+      .ext_core_instr_req_o(heep_core_instr_req),
+      .ext_core_instr_resp_i(heep_core_instr_resp),
+      .ext_core_data_req_o(heep_core_data_req),
+      .ext_core_data_resp_i(heep_core_data_resp),
+      .ext_debug_master_req_o(heep_debug_master_req),
+      .ext_debug_master_resp_i(heep_debug_master_resp),
+      .ext_dma_read_ch0_req_o(heep_dma_read_ch0_req),
+      .ext_dma_read_ch0_resp_i(heep_dma_read_ch0_resp),
+      .ext_dma_write_ch0_req_o(heep_dma_write_ch0_req),
+      .ext_dma_write_ch0_resp_i(heep_dma_write_ch0_resp),
+      .ext_dma_addr_ch0_req_o(heep_dma_addr_ch0_req),
+      .ext_dma_addr_ch0_resp_i(heep_dma_addr_ch0_resp),
+      .ext_peripheral_slave_req_o(ext_periph_slave_req),
+      .ext_peripheral_slave_resp_i(ext_periph_slave_resp),
       .external_subsystem_powergate_switch_no(),
       .external_subsystem_powergate_switch_ack_ni(),
       .external_subsystem_powergate_iso_no(),
@@ -203,5 +274,34 @@ module xilinx_core_v_mini_mcu_wrapper
 
   assign exit_value_o = exit_value[0];
 
+  // The external bus connects the external peripherals among them and to
+  // the corresponding X-HEEP slave port (to the internal system bus).
+  ext_bus #(
+      .EXT_XBAR_NMASTER(EXT_XBAR_NMASTER),
+      .EXT_XBAR_NSLAVE (EXT_XBAR_NSLAVE)
+  ) ext_bus_i (
+      .clk_i                    (clk_i),
+      .rst_ni                   (rst_n),
+      .addr_map_i               (EXT_XBAR_ADDR_RULES),
+      .default_idx_i            (NTT_INTT_IP_IDX[LOG_EXT_XBAR_NSLAVE-1:0]),
+      .heep_core_instr_req_i    (heep_core_instr_req),
+      .heep_core_instr_resp_o   (heep_core_instr_resp),
+      .heep_core_data_req_i     (heep_core_data_req),
+      .heep_core_data_resp_o    (heep_core_data_resp),
+      .heep_debug_master_req_i  (heep_debug_master_req),
+      .heep_debug_master_resp_o (heep_debug_master_resp),
+      .heep_dma_read_ch0_req_i  (heep_dma_read_ch0_req),
+      .heep_dma_read_ch0_resp_o (heep_dma_read_ch0_resp),
+      .heep_dma_write_ch0_req_i (heep_dma_write_ch0_req),
+      .heep_dma_write_ch0_resp_o(heep_dma_write_ch0_resp),
+      .heep_dma_addr_ch0_req_i  (heep_dma_addr_ch0_req),
+      .heep_dma_addr_ch0_resp_o (heep_dma_addr_ch0_resp),
+      .ext_master_req_i         (ext_master_req),
+      .ext_master_resp_o        (ext_master_resp),
+      .heep_slave_req_o         (heep_slave_req),
+      .heep_slave_resp_i        (heep_slave_resp),
+      .ext_slave_req_o          (ext_slave_req),
+      .ext_slave_resp_i         (ext_slave_resp)
+  );
 
 endmodule
